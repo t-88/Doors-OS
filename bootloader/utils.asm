@@ -1,3 +1,4 @@
+[bits 16]
 load_kernel:    ; (dh , bx) 
     pusha       ;  dh => number of sectors to read starting from 1
     push dx     ;  bx => where to read those sectors
