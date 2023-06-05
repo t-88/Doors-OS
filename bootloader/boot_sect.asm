@@ -1,5 +1,7 @@
 [org 0x7c00]
 [bits 16]
+KERNEL_ENTRY equ 0x1000
+
 start:
     mov [bootDrive] , dl ; storing boot drive
 
@@ -12,9 +14,9 @@ start:
     mov al , 3
     int 0x10
 
-    ; load 15 sector to mem
-    mov bx , 0x9000
-    mov dh , 3
+    ; load 15 sector to mem for the kernel
+    mov bx , KERNEL_ENTRY
+    mov dh , 15
     mov dl , [bootDrive]
     call load_kernel
 
@@ -60,7 +62,11 @@ main_pm:
     mov edi , 0x00A0
     mov bx , HELLO_32_BIT
     call print_pm
-    jmp $    
+    xor edi , edi
+
+
+    call KERNEL_ENTRY
+    jmp $
 ret
 
 
@@ -70,6 +76,5 @@ GOOD_BAY_16_BIT db          "[Info] Exiting 16 bit mode", 0
 HELLO_32_BIT db          "[Info] We are Now in 32 bit mode", 0
 
 bootDrive db 0
-
 times 510 - ($ - $$) db 0 ; padding memory
 dw 0xaa55
