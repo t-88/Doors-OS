@@ -7,9 +7,9 @@ qemu:
 	# so many flags that my head will explode
 	# i need to wrap my head around this stuff
 	
-	gcc -ffreestanding -m32 -fno-pie  -Ikernel/drivers -c kernel/kernel.c  -o build/kernel.o
-	# gcc -ffreestanding -m32 -fno-pie  -Ikernel/drivers -c kernel/drivers/screen.c  -o build/screen.o
-	# gcc -ffreestanding -m32 -fno-pie  -Ikernel/drivers -c kernel/drivers/port.c  -o build/port.o
+	gcc -ffreestanding -m32 -fno-pie  -Ikernel/drivers   -Ikernel/memory -c kernel/kernel.c  -o build/kernel.o
+	# gcc -ffreestanding -m32 -fno-pie  -Ikernel/drivers -Ikernel/memory -c kernel/drivers/screen.c  -o build/screen.o
+	# gcc -ffreestanding -m32 -fno-pie  -Ikernel/drivers -Ikernel/memory -c kernel/drivers/port.c  -o build/port.o
 
 	ld -m elf_i386 -o build/kernel.bin -e main -Ttext 0x1000 build/kernel_entry.o build/kernel.o --oformat binary   
 

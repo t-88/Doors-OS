@@ -4,6 +4,8 @@
         "stdint.h": "c",
         "cstdint": "c",
         "port.h": "c",
-        "shared.h": "c"
+        "shared.h": "c",
+        "memory.h": "c",
+        "kmemory.h": "c"
     }
 }

@@ -3,6 +3,7 @@
 
 #include "shared.h"
 #include "port.h"
+#include "kmemory.h"
 
 #define VIDEO_MEM 0xb8000 
 #define MAX_ROWS 25 
@@ -22,6 +23,7 @@ void clear_screen();
 void kprint_char_at(uint8_t chr,int attr,int x, int y);
 void kprint_at(char* str,char attr,int x, int y);
 void kprint(char* str,char attr);
+void scroll_screen();
 
 void init_screen_driver() {
     video_mem = (uint8_t*) VIDEO_MEM;
@@ -54,16 +56,39 @@ void clear_screen() {
 
     set_cursor_pos(0);
 }
+
+void scroll_screen() {
+    for (int y = 0; y < MAX_ROWS; y++) {
+        for (int x = 0; x < MAX_COLS; x++) {
+            mem_copy(
+                      video_mem + 2 * (x + (y +1) * MAX_COLS),
+                      video_mem + 2 * (x + y * MAX_COLS),
+                      2
+                    );
+        }
+    }
+}
 void kprint_char_at(uint8_t chr,int attr,int x, int y) {
     if(attr < 0) {
         attr = ATTR_WHITE_ON_BLACK;
     }
     if(chr == '\n') {
         uint32_t cursor_pos = get_cursor_pos();
+        if(cursor_pos / MAX_COLS >= MAX_ROWS - 1 ) {
+            scroll_screen();
+            cursor_pos -= MAX_COLS;
+        }
         set_cursor_pos((cursor_pos / MAX_COLS + 1) * MAX_COLS);
+
     } else {
         if(x == -1 || y == -1) {
             uint32_t cursor_pos = get_cursor_pos();
+
+            if(cursor_pos >= MAX_ROWS * MAX_COLS) {
+                scroll_screen();
+                cursor_pos -= MAX_COLS;
+            }
+
             video_mem[2 * cursor_pos] = chr;
             video_mem[2 * cursor_pos + 1] = attr;
             set_cursor_pos(cursor_pos + 1);
