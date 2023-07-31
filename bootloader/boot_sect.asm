@@ -22,9 +22,8 @@ start:
 
 
     ; exit 16 bit mode
-    mov bx, GOOD_BAY_16_BIT
+    mov bx, GOOD_BYE_16_BIT
     call print
-
 
 
 
@@ -72,7 +71,7 @@ ret
 
 KERNEL_LOAD_FAILED_CARRY db "[Error] Failed to load kernel carry is 1" , 0
 KERNEL_LOAD_FAILED_AL db    "[Error] Failed to load kernel wrong number of sectors read", 0
-GOOD_BAY_16_BIT db          "[Info] Exiting 16 bit mode", 0
+GOOD_BYE_16_BIT db          "[Info] Exiting 16 bit mode", 0
 HELLO_32_BIT db          "[Info] We are Now in 32 bit mode", 0
 
 bootDrive db 0
