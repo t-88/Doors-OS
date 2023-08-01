@@ -6,6 +6,8 @@
         "port.h": "c",
         "shared.h": "c",
         "memory.h": "c",
-        "kmemory.h": "c"
+        "kmemory.h": "c",
+        "isr.h": "c",
+        "idt.h": "c"
     }
 }

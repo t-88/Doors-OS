@@ -16,5 +16,9 @@ and the most important goal is to learn and explore
 -   run make
 
 
+## Personal Notes
+-   day and a half for not copying code right, in idt the low then the hight addr, fuck that too long, dang it.
+
+
 ### License
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)

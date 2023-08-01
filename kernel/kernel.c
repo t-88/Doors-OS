@@ -1,23 +1,17 @@
 #include "shared.h"
 #include "screen.h"
 #include "idt.h"
+#include "isr.h"
 
 
 
-
-
-void main(void) {
+void main() {
     init_screen_driver();
+    // clear_screen();
+
+    kprint("\n(1)\n",-1);   
     
-    clear_screen();
-    for (int i = 0; i < MAX_ROWS+1; i++) {
-        kprint_char_at('0' + i,-1,-1,-1);
-        kprint_char_at('0' + i,-1,-1,-1);
-        kprint_char_at('0' + i,-1,-1,-1);
-        kprint_char_at('0' + i,-1,-1,-1);
-        kprint_char_at('0' + i,-1,-1,-1);
-        kprint("\n",-1);
-    }
-        
-    while (1){}
+    isr_install();
+    __asm__ __volatile__("int $0");
+    kprint("(5)\n",-1);   
 }
