@@ -1,5 +1,6 @@
 #include "shared.h"
 #include "screen.h"
+#include "idt.h"
 
 
 

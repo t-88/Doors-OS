@@ -5,6 +5,7 @@
 #include "port.h"
 #include "kmemory.h"
 
+
 #define VIDEO_MEM 0xb8000 
 #define MAX_ROWS 25 
 #define MAX_COLS 80 
@@ -29,17 +30,7 @@ void init_screen_driver() {
     video_mem = (uint8_t*) VIDEO_MEM;
 }
 
-uint32_t get_cursor_pos() {
-    uint32_t cursor_pos;
-    
-    port_byte_out(0x3d4,14);
-    cursor_pos =  port_byte_in(0x3d5);
-    cursor_pos <<= 8;
-    port_byte_out(0x3d4,15);
-    cursor_pos |=  port_byte_in(0x3d5);
 
-    return cursor_pos;
-}
 void set_cursor_pos(uint32_t cursor_pos) {
     port_byte_out(0x3d4,14);
     port_byte_out(0x3d5,cursor_pos >> 8);
@@ -118,6 +109,17 @@ void kprint(char* str,char attr) {
 }
 
 
+uint32_t get_cursor_pos() {
+    uint32_t cursor_pos;
+    
+    port_byte_out(0x3d4,14);
+    cursor_pos =  port_byte_in(0x3d5);
+    cursor_pos <<= 8;
+    port_byte_out(0x3d4,15);
+    cursor_pos |=  port_byte_in(0x3d5);
+
+    return cursor_pos;
+}
 
 #endif //SCREEN_H_
 

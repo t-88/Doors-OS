@@ -10,6 +10,7 @@ gdt_start:
         db 10011010b 
         db 11001111b 
         db 0 
+        
     gdt_data:
         dw 0xffff
         dw 0
