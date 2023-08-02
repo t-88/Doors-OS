@@ -10,20 +10,20 @@ start:
     mov sp ,  bp
 
     ; clear screen 
-    ; mov ah , 0 
-    ; mov al , 3
-    ; int 0x10
+    mov ah , 0 
+    mov al , 3
+    int 0x10
 
     ; load 15 sector to mem for the kernel
     mov bx , KERNEL_ENTRY
-    mov dh , 15
+    mov dh , 16
     mov dl , [bootDrive]
     call load_kernel
 
 
     ; exit 16 bit mode
-    ; mov bx, GOOD_BYE_16_BIT
-    ; call print
+    mov bx, GOOD_BYE_16_BIT
+    call print
 
 
 
@@ -58,11 +58,10 @@ init_pm:
 call main_pm
 
 main_pm:
-    ; mov edi , 0x00A0
-    ; mov bx , HELLO_32_BIT
-    ; call print_pm
-    ; xor edi , edi
-
+    mov edi , 0x00A0
+    mov bx , HELLO_32_BIT
+    call print_pm
+    xor edi , edi
 
     call KERNEL_ENTRY
     jmp $

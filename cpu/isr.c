@@ -114,6 +114,7 @@ void isr_handler(registers_t r) {
 isr_t interrupt_handlers[256];
 void register_interrupt_handler(u8 n, isr_t handler) {
     interrupt_handlers[n] = handler;
+
 }
 
 
@@ -121,6 +122,7 @@ void irq_handler(registers_t r) {
     PIC_send_eoi(r.int_no);
 
     if (interrupt_handlers[r.int_no] != 0) {
+
         isr_t handler = interrupt_handlers[r.int_no];
         handler(r);
     }

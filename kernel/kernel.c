@@ -2,7 +2,7 @@
 #include "screen.h"
 #include "idt.h"
 #include "isr.h"
-
+#include "timer.h"
 
 
 void main() {
@@ -11,7 +11,7 @@ void main() {
 
     isr_install();
 
-    __asm__ __volatile__("int $0x0");
-    __asm__ __volatile__("int $0x1");
-    __asm__ __volatile__("int $0x3");
+
+    __asm__ __volatile__("sti");
+    init_timer(60);
 }

@@ -44,11 +44,10 @@ irq_common_stub:
     pop ebx  ; Different than the ISR code
 
     ; 3. Restore state
-	pop eax 
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
+	mov ds, bx
+	mov es, bx
+	mov fs, bx
+	mov gs, bx
 	popa
 	add esp, 8 ; Cleans up the pushed error code and pushed ISR number
 	sti
