@@ -9,6 +9,7 @@
         "kmemory.h": "c",
         "isr.h": "c",
         "idt.h": "c",
-        "pic.h": "c"
+        "pic.h": "c",
+        "keyboard.h": "c"
     }
 }
