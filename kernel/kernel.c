@@ -3,6 +3,7 @@
 #include "idt.h"
 #include "isr.h"
 #include "timer.h"
+// #include "keyboard.h"
 
 
 void main() {
@@ -13,5 +14,6 @@ void main() {
 
 
     __asm__ __volatile__("sti");
-    init_timer(60);
+    // init_timer(60);
+    init_keyboard_driver();
 }

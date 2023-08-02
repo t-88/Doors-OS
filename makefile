@@ -1,6 +1,6 @@
 INCLUDES = -Ikernel/drivers -Ikernel/memory -Icpu -Iutils
 CC = gcc -g -m32 -fno-pie -fno-stack-protector
-OBJ = build/kernel_entry.o  build/idt.o build/isr.o     build/port.o build/screen.o build/kmemory.o  build/kernel.o   build/interrupt.o build/sys_std.o build/pic.o build/timer.o
+OBJ = build/kernel_entry.o  build/idt.o build/isr.o     build/port.o build/screen.o build/kmemory.o   build/kernel.o   build/interrupt.o build/sys_std.o build/pic.o build/timer.o build/keyboard.o
 
 # $@
 # $<
@@ -25,6 +25,8 @@ build/sys_std.o: utils/sys_std.c
 build/pic.o: cpu/pic.c
 	$(CC)  -o $@ -c $< ${INCLUDES}
 build/timer.o: cpu/timer.c
+	$(CC)  -o $@ -c $< ${INCLUDES}
+build/keyboard.o: kernel/drivers/keyboard.c
 	$(CC)  -o $@ -c $< ${INCLUDES}
 
 

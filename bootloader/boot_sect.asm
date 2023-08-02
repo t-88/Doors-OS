@@ -16,7 +16,7 @@ start:
 
     ; load 15 sector to mem for the kernel
     mov bx , KERNEL_ENTRY
-    mov dh , 16
+    mov dh , 32
     mov dl , [bootDrive]
     call load_kernel
 
