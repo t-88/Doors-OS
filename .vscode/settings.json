@@ -10,6 +10,8 @@
         "isr.h": "c",
         "idt.h": "c",
         "pic.h": "c",
-        "keyboard.h": "c"
+        "keyboard.h": "c",
+        "types.h": "c",
+        "sys_std.h": "c"
     }
 }

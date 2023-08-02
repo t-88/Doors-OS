@@ -5,15 +5,17 @@
 #include "timer.h"
 #include "keyboard.h"
 
-
-void main() {
+void kernel_init() {
     init_screen_driver();
-    clear_screen();
+    isr_init();
 
-    isr_install();
-
-
-    asm volatile("sti");
+    sti();
     init_timer(60);
     init_keyboard_driver();
+}
+
+void kernel_main() {
+    kernel_init();
+    clear_screen();
+
 }

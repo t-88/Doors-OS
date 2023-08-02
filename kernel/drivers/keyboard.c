@@ -2,206 +2,99 @@
 #include "isr.h"
 #include "screen.h"
 
-void print_letter(u16 scancode) {
-    switch (scancode) {
-        case 0x0:
-            kprint("ERROR",-1);
-            break;
-        case 0x1:
-            kprint("ESC",-1);
-            break;
-        case 0x2:
-            kprint("1",-1);
-            break;
-        case 0x3:
-            kprint("2",-1);
-            break;
-        case 0x4:
-            kprint("3",-1);
-            break;
-        case 0x5:
-            kprint("4",-1);
-            break;
-        case 0x6:
-            kprint("5",-1);
-            break;
-        case 0x7:
-            kprint("6",-1);
-            break;
-        case 0x8:
-            kprint("7",-1);
-            break;
-        case 0x9:
-            kprint("8",-1);
-            break;
-        case 0x0A:
-            kprint("9",-1);
-            break;
-        case 0x0B:
-            kprint("0",-1);
-            break;
-        case 0x0C:
-            kprint("-",-1);
-            break;
-        case 0x0D:
-            kprint("+",-1);
-            break;
-        case 0x0E:
-            kprint("Backspace",-1);
-            break;
-        case 0x0F:
-            kprint("Tab",-1);
-            break;
-        case 0x10:
-            kprint("Q",-1);
-            break;
-        case 0x11:
-            kprint("W",-1);
-            break;
-        case 0x12:
-            kprint("E",-1);
-            break;
-        case 0x13:
-            kprint("R",-1);
-            break;
-        case 0x14:
-            kprint("T",-1);
-            break;
-        case 0x15:
-            kprint("Y",-1);
-            break;
-        case 0x16:
-            kprint("U",-1);
-            break;
-        case 0x17:
-            kprint("I",-1);
-            break;
-        case 0x18:
-            kprint("O",-1);
-            break;
-        case 0x19:
-            kprint("P",-1);
-            break;
-		case 0x1A:
-			kprint("[",-1);
-			break;
-		case 0x1B:
-			kprint("]",-1);
-			break;
-		case 0x1C:
-			kprint("ENTER",-1);
-			break;
-		case 0x1D:
-			kprint("LCtrl",-1);
-			break;
-		case 0x1E:
-			kprint("A",-1);
-			break;
-		case 0x1F:
-			kprint("S",-1);
-			break;
-        case 0x20:
-            kprint("D",-1);
-            break;
-        case 0x21:
-            kprint("F",-1);
-            break;
-        case 0x22:
-            kprint("G",-1);
-            break;
-        case 0x23:
-            kprint("H",-1);
-            break;
-        case 0x24:
-            kprint("J",-1);
-            break;
-        case 0x25:
-            kprint("K",-1);
-            break;
-        case 0x26:
-            kprint("L",-1);
-            break;
-        case 0x27:
-            kprint(";",-1);
-            break;
-        case 0x28:
-            kprint("'",-1);
-            break;
-        case 0x29:
-            kprint("`",-1);
-            break;
-		case 0x2A:
-			kprint("LShift",-1);
-			break;
-		case 0x2B:
-			kprint("\\",-1);
-			break;
-		case 0x2C:
-			kprint("Z",-1);
-			break;
-		case 0x2D:
-			kprint("X",-1);
-			break;
-		case 0x2E:
-			kprint("C",-1);
-			break;
-		case 0x2F:
-			kprint("V",-1);
-			break;
-        case 0x30:
-            kprint("B",-1);
-            break;
-        case 0x31:
-            kprint("N",-1);
-            break;
-        case 0x32:
-            kprint("M",-1);
-            break;
-        case 0x33:
-            kprint(",",-1);
-            break;
-        case 0x34:
-            kprint(".",-1);
-            break;
-        case 0x35:
-            kprint("/",-1);
-            break;
-        case 0x36:
-            kprint("Rshift",-1);
-            break;
-        case 0x37:
-            kprint("Keypad *",-1);
-            break;
-        case 0x38:
-            kprint("LAlt",-1);
-            break;
-        case 0x39:
-            kprint("Spc",-1);
-            break;
-        default:
-            // /* 'keuyp' event corresponds to the 'keydown' + 0x80 
-            //  * it may still be a scancode we haven't implemented yet, or
-            //  * maybe a control/escape sequence */
-            if (scancode <= 0x7f) {
-                kprint("Unknown key down",-1);
-            } else if (scancode <= 0x39 + 0x80) {
-                kprint("key up ",-1);
-                print_letter(scancode - 0x80);
-            } else kprint("Unknown key up",-1);
-            break;
+void keyboard_print_key(Keyboard_Key key) {
+    switch (key) {
+        case ESC: kprint("ESC",-1); break;
+        case NUM_1: kprint("NUM_1",-1); break;
+        case NUM_2: kprint("NUM_2",-1); break;
+        case NUM_3: kprint("NUM_3",-1); break;
+        case NUM_4: kprint("NUM_4",-1); break;
+        case NUM_5: kprint("NUM_5",-1); break;
+        case NUM_6: kprint("NUM_6",-1); break;
+        case NUM_7: kprint("NUM_7",-1); break;
+        case NUM_8: kprint("NUM_8",-1); break;
+        case NUM_9: kprint("NUM_9",-1); break;
+        case NUM_0: kprint("NUM_0",-1); break;
+        case Minus: kprint("Minus",-1); break;
+        case Plus: kprint("Plus",-1); break;
+        case Backspace: kprint("Backspace",-1); break;
+        case Tab: kprint("Tab",-1); break;
+        case Q: kprint("Q",-1); break;
+        case W: kprint("W",-1); break;
+        case E: kprint("E",-1); break;
+        case R: kprint("R",-1); break;
+        case T: kprint("T",-1); break;
+        case Y: kprint("Y",-1); break;
+        case U: kprint("U",-1); break;
+        case I: kprint("I",-1); break;
+        case O: kprint("O",-1); break;
+        case P: kprint("P",-1); break;
+        case SQR_PRA_OPEN: kprint("SQR_PRA_OPEN",-1); break;
+        case SQR_PRA_CLOSE: kprint("SQR_PRA_CLOSE",-1); break;
+        case Enter: kprint("Enter",-1); break;
+        case LCtrl: kprint("LCtrl",-1); break;
+        case A: kprint("A",-1); break;
+        case S: kprint("S",-1); break;
+        case D: kprint("D",-1); break;
+        case F: kprint("F",-1); break;
+        case G: kprint("G",-1); break;
+        case H: kprint("H",-1); break;
+        case J: kprint("J",-1); break;
+        case K: kprint("K",-1); break;
+        case L: kprint("L",-1); break;
+        case SemiColon: kprint("SemiColon",-1); break;
+        case Apostrophe: kprint("Apostrophe",-1); break;
+        case BackTick: kprint("BackTick",-1); break;
+        case LShift: kprint("LShift",-1); break;
+        case BackSlash: kprint("BackSlash",-1); break;
+        case Z: kprint("Z",-1); break;
+        case X: kprint("X",-1); break;
+        case C: kprint("C",-1); break;
+        case V: kprint("V",-1); break;
+        case B: kprint("B",-1); break;
+        case N: kprint("N",-1); break;
+        case M: kprint("M",-1); break;
+        case Comma: kprint("Comma",-1); break;
+        case Div: kprint("Div",-1); break;
+        case Rshift: kprint("Rshift",-1); break;
+        case Keypad: kprint("Keypad",-1); break;
+        case LAlt: kprint("LAlt",-1); break;
+        case Space: kprint("Space",-1); break;            
     }
 }
-
-
-static void keyboard_callback(registers_t reg) {
-    u8 scancode = port_byte_in(0x60);
+void print_letter(u16 scancode) {
     kprint("keyboard irq: ",-1);
-    print_letter(scancode);
+
+    // error key comes in index 0 so we offset it
+
+    if(scancode == 0) {
+        kprint("ERROR",-1);
+    } else if(scancode >= 0x1 && scancode <= 0x39) {
+        keyboard_print_key(scancode - 1);
+    } else if(scancode <= 0x7f) {
+        kprint("Unknown key down",-1);
+    } else if (scancode <= 0x39 + 0x80) {
+        kprint("key up",-1);
+        keyboard_print_key(scancode - 1 - 0x80);
+    }
+
+    //TODO: maybe ignore unkown chars or just print them
+    // well its reachable, arrow keys and stuff,
+    // Unreachable(" unreachable code in print_letter ");
+    // for (;;){}
     kprint("\n",-1);
+
 }
 
 
+static void keyboard_callback(intrrupt_mdata reg) {
+    u8 scancode = port_byte_in(0x60);
+    UN_USED(reg);
+    UN_USED(scancode);
+
+    // print_letter(scancode);
+}
 
 void init_keyboard_driver() {
-    register_interrupt_handler(33,keyboard_callback);
+    irq_register_handler(IRQ1,keyboard_callback);
 }

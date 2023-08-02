@@ -11,16 +11,16 @@ typedef struct idt_entry {
     u16 irs_base_high;
 }__attribute__((packed)) idt_entry;
 
-
 typedef struct idt_ptr {
     u16 limit;
     u32 base;
 }__attribute__((packed)) idt_ptr;
 
+
 #define IDT_ENTRIES 256
+
 extern idt_entry idt[IDT_ENTRIES];
 extern idt_ptr idtp;
 
-
-extern void set_idt_gate(int i, u32 handler);
-extern void set_idt();
+extern void idt_register_gate(int i, u32 handler);
+extern void idt_setup();

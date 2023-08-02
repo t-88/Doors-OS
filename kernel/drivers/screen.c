@@ -67,7 +67,7 @@ void kprint_char_at(uint8_t chr,int attr,int x, int y) {
 }
 void kprint_at(char* str,char attr,int x, int y) {
     int index = 0;
-    if(x == -1 | y == -1) {
+    if(x == -1 || y == -1) {
         while (str[index]){
             kprint_char_at(str[index],attr,-1,-1);
             index++;

@@ -20,3 +20,8 @@ void int_to_str(int number, char str[]) {
         counter++;
     }
 }
+int strlen(char str[]) {
+    int count = 0;
+    while (str[count++]) count++;
+    return count - 1;
+}

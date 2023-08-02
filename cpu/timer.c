@@ -6,18 +6,20 @@
 u32 tick = 0;
 
 
-static void timer_callback(registers_t regs) {
-    tick++;
+void timer_print_tick() {
     kprint("Tick: ",-1);
-    
     char str[256];
     int_to_str(tick,str);
     kprint(str,-1);
     kprint("\n",-1);
 }
+static void timer_callback(intrrupt_mdata regs) {
+    UN_USED(regs);
+    tick++;
+}
 
 void init_timer(u32 freq) {
-    register_interrupt_handler(32,timer_callback);
+    irq_register_handler(IRQ0,timer_callback);
 
     u32 div = 1193180 / freq;
     u8 low = (u8) (div & 0xFF);
@@ -26,6 +28,4 @@ void init_timer(u32 freq) {
     port_byte_out(0x43,0x36);
     port_byte_out(0x40,low);
     port_byte_out(0x40,high);
-
-
 }
