@@ -27,7 +27,7 @@ void clear_screen() {
 void scroll_screen() {
     for (int y = 0; y < MAX_ROWS; y++) {
         for (int x = 0; x < MAX_COLS; x++) {
-            mem_copy(
+            kmemcpy(
                       video_mem + 2 * (x + (y +1) * MAX_COLS),
                       video_mem + 2 * (x + y * MAX_COLS),
                       2

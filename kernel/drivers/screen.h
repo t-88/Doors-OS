@@ -2,7 +2,7 @@
 
 #include "shared.h"
 #include "port.h"
-#include "kmemory.h"
+#include "mem.h"
 
 
 #define VIDEO_MEM 0xb8000 
