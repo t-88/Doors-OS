@@ -10,9 +10,9 @@ start:
     mov sp ,  bp
 
     ; clear screen 
-    mov ah , 0 
-    mov al , 3
-    int 0x10
+    ; mov ah , 0 
+    ; mov al , 3
+    ; int 0x10
 
     ; load 15 sector to mem for the kernel
     mov bx , KERNEL_ENTRY

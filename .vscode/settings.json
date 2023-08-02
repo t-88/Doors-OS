@@ -8,6 +8,7 @@
         "memory.h": "c",
         "kmemory.h": "c",
         "isr.h": "c",
-        "idt.h": "c"
+        "idt.h": "c",
+        "pic.h": "c"
     }
 }

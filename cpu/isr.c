@@ -1,10 +1,48 @@
 
 #include "isr.h"
+#include "sys_std.h"
+#include "pic.h"
+
+
+
+/* To print the message which defines every exception */
+char *exception_messages[] = {
+    "Division By Zero",
+    "Debug",
+    "Non Maskable Interrupt",
+    "Breakpoint",
+    "Into Detected Overflow",
+    "Out of Bounds",
+    "Invalid Opcode",
+    "No Coprocessor",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Bad TSS",
+    "Segment Not Present",
+    "Stack Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Unknown Interrupt",
+    "Coprocessor Fault",
+    "Alignment Check",
+    "Machine Check",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved"
+};
 
 
 void isr_install() {
-    kprint("(2)\n",-1);   
-
     set_idt_gate(0,  (u32)isr0);
     set_idt_gate(1,  (u32)isr1);
     set_idt_gate(2,  (u32)isr2);
@@ -38,56 +76,52 @@ void isr_install() {
     set_idt_gate(30, (u32)isr30);
     set_idt_gate(31, (u32)isr31);
 
+    PIC_remap(PIC1_OFFSET,PIC2_OFFSET);
+    set_idt_gate(32, (u32)irq0);
+    set_idt_gate(33, (u32)irq1);
+    set_idt_gate(34, (u32)irq2);
+    set_idt_gate(35, (u32)irq3);
+    set_idt_gate(36, (u32)irq4);
+    set_idt_gate(37, (u32)irq5);
+    set_idt_gate(38, (u32)irq6);
+    set_idt_gate(39, (u32)irq7);
+    set_idt_gate(40, (u32)irq8);
+    set_idt_gate(41, (u32)irq9);
+    set_idt_gate(42, (u32)irq10);
+    set_idt_gate(43, (u32)irq11);
+    set_idt_gate(44, (u32)irq12);
+    set_idt_gate(45, (u32)irq13);
+    set_idt_gate(46, (u32)irq14);
+    set_idt_gate(47, (u32)irq15);
+
 
     set_idt(); // Load with ASM
-    kprint("(6)\n",-1);   
 
 }
 
-/* To print the message which defines every exception */
-char *exception_messages[] = {
-    "Division By Zero",
-    "Debug",
-    "Non Maskable Interrupt",
-    "Breakpoint",
-    "Into Detected Overflow",
-    "Out of Bounds",
-    "Invalid Opcode",
-    "No Coprocessor",
-
-    "Double Fault",
-    "Coprocessor Segment Overrun",
-    "Bad TSS",
-    "Segment Not Present",
-    "Stack Fault",
-    "General Protection Fault",
-    "Page Fault",
-    "Unknown Interrupt",
-
-    "Coprocessor Fault",
-    "Alignment Check",
-    "Machine Check",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved"
-};
 
 void isr_handler(registers_t r) {
-    kprint("(4)\n",-1);   
+    
+    kprint("received interrupt: ",-1);
+    char str[5];
+    int_to_str(r.int_no,str);
+    kprint(str,-1);
 
-    // kprint("received interrupt: ",-1);
-    // kprint("\n",-1);
-    // kprint(exception_messages[r.int_no],-1);
-    // kprint("\n",-1);
+    // kprint(exception_messages[0],-1);
+    kprint("\n",-1);
+}
+
+isr_t interrupt_handlers[256];
+void register_interrupt_handler(u8 n, isr_t handler) {
+    interrupt_handlers[n] = handler;
+}
+
+
+void irq_handler(registers_t r) {
+    PIC_send_eoi(r.int_no);
+
+    if (interrupt_handlers[r.int_no] != 0) {
+        isr_t handler = interrupt_handlers[r.int_no];
+        handler(r);
+    }
 }

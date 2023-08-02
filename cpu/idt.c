@@ -19,7 +19,4 @@ void set_idt() {
     idtp.limit = 256 * sizeof(idt_entry) - 1;
 
     __asm__ __volatile__ ("lidtl (%0)" : : "r" (&idtp));
-    // __asm__ __volatile__ ("sti"); // set the interrupt flag
-
-    kprint("(3)\n",-1);   
 }

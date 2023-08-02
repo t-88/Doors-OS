@@ -21,3 +21,9 @@ uint16_t port_word_in(uint16_t port) {
 void port_word_out(uint16_t port,uint16_t data) {
     __asm__("out %%ax , %%dx" : : "a" (data) ,"d" (port));
 }
+
+// used to wait for 1 to 4 ms, PIC relax timing for now
+void io_wait(void){
+    port_byte_out(0x80, 0);
+}
+
