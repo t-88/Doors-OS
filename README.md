@@ -20,5 +20,10 @@ and the most important goal is to learn and explore
 -   day and a half for not copying code right, in idt the low then the hight addr, fuck that too long, dang it.
 
 
+
+## Credits
+-   ctr-c ctr-v from [cfenollosa os dev](https://github.com/cfenollosa/os-tutorial/tree/master)
+-   ofc [os-dev](https://wiki.osdev.org/Expanded_Main_Page) 
+
 ### License
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
