@@ -2,6 +2,9 @@
 #include "isr.h"
 #include "sys_std.h"
 #include "pic.h"
+#include "paging.h"
+
+extern void page_fault(Intrrupt_mdata regs);
 
 void isr_init() {
     idt_register_gate(0,  (u32)isr0);
@@ -58,12 +61,16 @@ void isr_init() {
     idt_setup(); // Load with ASM
 }
 
-void isr_handler(intrrupt_mdata r) {
+void isr_handler(Intrrupt_mdata r) {
     kprint("received interrupt: ",-1);
     char str[5];
     int_to_str(r.int_no,str);
     kprint(str,-1);
     kprint("\n",-1);
+
+    if(r.int_no == 14) {
+        page_fault(r);
+    }
 }
 
 
@@ -71,7 +78,7 @@ isr_t interrupt_handlers[256];
 inline void irq_register_handler(u8 n, isr_t handler) {
     interrupt_handlers[n] = handler;
 }
-void irq_handler(intrrupt_mdata r) {
+void irq_handler(Intrrupt_mdata r) {
     PIC_send_eoi(r.int_no);
     if (interrupt_handlers[r.int_no] != 0) {
         isr_t handler = interrupt_handlers[r.int_no];

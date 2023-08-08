@@ -1,8 +1,8 @@
-INCLUDES = -Ikernel/drivers -Ikernel/memory -Icpu/ -Iklibc/
-CC = gcc -g -m32 -fno-pie  -ffreestanding -fno-stack-protector -Wall -Wextra
+INCLUDES = -Ikernel/drivers -Ikernel/memory -Icpu/ -Iklibc/ -Icpu/paging/
+CC = gcc -g -m32 -fno-pie  -ffreestanding -fno-stack-protector -Wall
 LD = ld -m elf_i386
 
-C_SOURCE = $(wildcard kernel/*.c kernel/drivers/*.c kernel/memory/*.c klibc/*.c cpu/*.c)
+C_SOURCE = $(wildcard kernel/*.c kernel/drivers/*.c kernel/memory/*.c klibc/*.c cpu/*.c cpu/paging/*.c)
 OBJS = ${C_SOURCE:.c=.o}
 ASM_OBJS = bootloader/kernel_entry.o  cpu/interrupt.o
 
@@ -10,7 +10,7 @@ OS_FILE = build/os_img.bin
 
 all: run
 run:  build/os_img.bin
-	qemu-system-i386   -drive file=$(OS_FILE),if=floppy,format=raw -usb -device usb-mouse 
+	qemu-system-i386   -drive file=$(OS_FILE),if=floppy,format=raw 
 build/os_img.bin: build/boot_sect.bin build/kernel.bin 
 	cat $^ > $@
 build/boot_sect.bin: bootloader/boot_sect.asm

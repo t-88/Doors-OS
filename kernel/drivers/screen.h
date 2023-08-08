@@ -21,3 +21,26 @@ extern void kprint_char_at(uint8_t chr,int attr,int x, int y);
 extern void kprint_at(char* str,char attr,int x, int y);
 extern void kprint(char* str,char attr);
 extern void scroll_screen();
+
+
+
+#define PRINT_HEX(number) do {\
+    char str[100];\
+    hex_to_str(number,str);\
+    kprint(str,-1);\
+} while (0);
+
+#define PRINT_INT(number) do {\
+    char str[100];\
+    int_to_str(number,str);\
+    kprint(str,-1);\
+} while (0);
+
+
+#define PRINT(str) do {\
+    kprint(str,-1);\
+} while (0);
+
+#define PRINTLN(str) do {\
+    kprint(str"\n",-1);\
+} while (0);

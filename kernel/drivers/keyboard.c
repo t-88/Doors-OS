@@ -2,6 +2,8 @@
 #include "isr.h"
 #include "screen.h"
 
+static bool keyboard_get_char_checked; 
+
 void keyboard_print_key(Keyboard_Key key) {
     switch (key) {
         case ESC: kprint("ESC",-1); break;
@@ -63,38 +65,46 @@ void keyboard_print_key(Keyboard_Key key) {
     }
 }
 void print_letter(u16 scancode) {
-    kprint("keyboard irq: ",-1);
+    // kprint("keyboard irq: ",-1);
 
     // error key comes in index 0 so we offset it
 
     if(scancode == 0) {
-        kprint("ERROR",-1);
+        // kprint("ERROR",-1);
     } else if(scancode >= 0x1 && scancode <= 0x39) {
-        keyboard_print_key(scancode - 1);
+        // keyboard_print_key(scancode - 1);
+        keyboard_get_char_checked = true;
+
     } else if(scancode <= 0x7f) {
-        kprint("Unknown key down",-1);
+        // kprint("Unknown key down",-1);
     } else if (scancode <= 0x39 + 0x80) {
-        kprint("key up",-1);
-        keyboard_print_key(scancode - 1 - 0x80);
+        // kprint("key up",-1);
+        // keyboard_print_key(scancode - 1 - 0x80);
     }
 
     //TODO: maybe ignore unkown chars or just print them
     // well its reachable, arrow keys and stuff,
     // Unreachable(" unreachable code in print_letter ");
     // for (;;){}
-    kprint("\n",-1);
+    // kprint("\n",-1);
 
 }
 
 
-static void keyboard_callback(intrrupt_mdata reg) {
+static void keyboard_callback(Intrrupt_mdata reg) {
     u8 scancode = port_byte_in(0x60);
     UN_USED(reg);
     UN_USED(scancode);
 
-    // print_letter(scancode);
+
+    print_letter(scancode);
 }
 
 void init_keyboard_driver() {
     irq_register_handler(IRQ1,keyboard_callback);
+}
+
+void keybaord_get_char() {
+    keyboard_get_char_checked = false;
+    while (!keyboard_get_char_checked) { }
 }

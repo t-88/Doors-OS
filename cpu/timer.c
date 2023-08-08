@@ -13,7 +13,7 @@ void timer_print_tick() {
     kprint(str,-1);
     kprint("\n",-1);
 }
-static void timer_callback(intrrupt_mdata regs) {
+static void timer_callback(Intrrupt_mdata regs) {
     UN_USED(regs);
     tick++;
 }

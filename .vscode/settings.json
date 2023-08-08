@@ -12,6 +12,10 @@
         "pic.h": "c",
         "keyboard.h": "c",
         "types.h": "c",
-        "sys_std.h": "c"
+        "sys_std.h": "c",
+        "paging.h": "c",
+        "random": "c",
+        "timer.h": "c",
+        "mem.h": "c"
     }
 }

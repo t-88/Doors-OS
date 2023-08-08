@@ -12,9 +12,26 @@ void kmemcpy(u8 * source, u8 * dest,int n_bytes) {
     }
 }
 
-//TODO: this is no mem managment brother 
-u32 kmalloc(u32 size) {
+u32 kmalloc(u32 size,bool aligned, u32* phy) {
+    if(aligned == 1 && (free_mem_addr & 0x00000FFF)) {
+        free_mem_addr &= 0xFFFFF000;
+        free_mem_addr += 0x1000;
+
+    }
+
+    
+
+    if(phy) {
+        *phy = free_mem_addr;
+    }
+
     u32 addr = free_mem_addr;
     free_mem_addr += size; 
     return addr;
+}
+
+
+void memset(u32 *addr, u32 value, u32 nbytes) {
+    u32 *temp = (u32*)addr;
+    for ( ; nbytes != 0; nbytes--) *temp++ = value;
 }

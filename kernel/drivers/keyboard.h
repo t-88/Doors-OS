@@ -64,3 +64,4 @@ typedef enum Keyboard_Key {
 
 extern void init_keyboard_driver();
 extern void print_letter(u16 scancode);
+extern  void keybaord_get_char();
