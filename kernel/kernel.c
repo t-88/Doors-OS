@@ -51,6 +51,9 @@ void write_regs(u8* regs) {
 
 }
 
+
+u64* mem;
+
 void kernel_init() {
     init_screen_driver();
     isr_init();
@@ -59,19 +62,28 @@ void kernel_init() {
     init_timer(1);
     init_keyboard_driver();
 
+    free_mem_addr = 0x2000000;
+
+    mem = kmalloc(4 * 200 * 80,0,0);
 
 
-
-    //  allocate memry after the screen vga stuff
-    // free_mem_addr = 0x20000000;
     // paging_init();
 
 }
 
 
-
 static u32* frame_buffer = 0xA0000;
 extern u32 tick;
+
+
+void swap_buffers() {
+    for (u32 j = 0; j < 200; j++) {
+        for (u32 i = 0; i < 80; i++) {
+            frame_buffer[j * 80 + i] = mem[j * 80 + i];
+        }
+    }
+    
+}    
 
 
 void gfx_draw_pixel(u32 x,u32 y,u8 c) {
@@ -84,15 +96,13 @@ void gfx_draw_pixel(u32 x,u32 y,u8 c) {
     color <<= offset;
 
     x /= 4;
-    frame_buffer[y * 80 + x] &= ~(0x00000000FF << offset);
-    frame_buffer[y * 80 + x] |= color;
+    mem[y * 80 + x] &= ~(0x00000000FF << offset);
+    mem[y * 80 + x] |= color;
 }
 
 void gfx_clear(u8 c) {
-    for (u32 j = 0; j < 200; j++) {
-        for (u32 i = 0; i < 320; i++) {
-            frame_buffer[j * 320 + i] = c;
-        }
+    for (u64 i = 0; i < 4 * 80 * 200; i++) {
+        mem[i] = 0;
     }
 }
 void gfx_draw_rect(u32 x,u32 y,u32 w, u32 h,u8 c) {
@@ -147,11 +157,11 @@ void kernel_main() {
     
 
     write_regs(g_320x200x256);
-    gfx_clear(0);
-
-
     while (1) {
+        gfx_clear(0);
         gfx_draw_rect(mouse_x,mouse_y,5,5,0xF);
+
+        swap_buffers();
     }
 
 }
