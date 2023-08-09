@@ -10,7 +10,7 @@ OS_FILE = build/os_img.bin
 
 all: run
 run:  build/os_img.bin
-	qemu-system-i386   -drive file=$(OS_FILE),if=floppy,format=raw 
+	qemu-system-i386   -drive file=$(OS_FILE),if=floppy,format=raw  -vga std
 build/os_img.bin: build/boot_sect.bin build/kernel.bin 
 	cat $^ > $@
 build/boot_sect.bin: bootloader/boot_sect.asm
