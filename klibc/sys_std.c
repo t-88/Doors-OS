@@ -3,11 +3,18 @@
 #include "screen.h"
 
 void int_to_str(int number, char str[]) {
-    if(number == 0) {
+    if(number == 0 || number == -0) {
         str[0] = '0';
         str[1] = '\0';
         return;
     }
+    bool is_nigative = false;
+    if(number < 0) {
+        str[0] = '-';
+        number *= -1;
+        is_nigative = true;
+    }
+
     char tmp_str[256];
     int size = 0;
     while (number != 0) {
@@ -15,10 +22,10 @@ void int_to_str(int number, char str[]) {
         number /= 10;
         size++;
     }
-    str[size] = '\0';
+    str[size + is_nigative] = '\0';
     int counter = 0;
     while (counter < size) {
-        str[counter] = tmp_str[size - counter - 1];
+        str[counter + is_nigative] = tmp_str[size - counter - 1];
         counter++;
     }
 }
