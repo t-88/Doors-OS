@@ -14,9 +14,13 @@ start:
     mov al , 3
     int 0x10
 
-    ; load 15 sector to mem for the kernel
+    ; load 64 sector to mem for the kernel
+    ; i change dh bc i want bigger kernel i really dont know what i am doing
+    ; as i understad it when i load the kernel i have unlimited accses to memery at least 4gb
+    ; BUT i always come to add more sectors so meh
+    ;TODO: WTF IS THIS
     mov bx , KERNEL_ENTRY
-    mov dh , 32
+    mov dh , 54
     mov dl , [bootDrive]
     call load_kernel
 
