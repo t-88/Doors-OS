@@ -1,6 +1,8 @@
 #pragma once
 #include "shared.h"
 #include "types.h"
+#include "screen.h"
+
 
 
 typedef struct idt_entry {
@@ -24,3 +26,25 @@ extern idt_ptr idtp;
 
 extern void idt_register_gate(int i, u32 handler);
 extern void idt_setup();
+
+
+// #define IDT_IMPLEMENTATION_C
+#ifdef  IDT_IMPLEMENTATION_C
+
+idt_entry idt[IDT_ENTRIES];
+idt_ptr idtp;
+
+void idt_register_gate(int i, u32 handler) {
+    idt[i].irs_base_low = (u16)(handler & 0xFFFF);
+    idt[i].irs_base_high = (u16)((handler >> 16) & 0xFFFF);
+    idt[i].zero = 0;
+    idt[i].selector = 0x08;
+    idt[i].flags = 0x8E;
+}
+void idt_setup() {
+    idtp.base = (u32) &idt;
+    idtp.limit = 256 * sizeof(idt_entry) - 1;
+
+    asm volatile ("lidtl (%0)" : : "r" (&idtp));
+}
+#endif

@@ -1,21 +1,8 @@
-#include "shared.h"
-#include "screen.h"
-#include "idt.h"
-#include "isr.h"
-#include "timer.h"
-#include "mem.h"
-#include "paging.h"
-#include "mouse.h"
+#include "kernel.h"
 
+u32 screen_width = 320;
+u32 screen_height = 200;
 
-#define KEYBOARD_DRIVER_IMPLEMENTATION
-#include "keyboard.h"
-#define TERMINAL_IMPLEMENETAION_C
-#include "terminal.h"
-
-
-int screen_width = 320;
-int screen_height = 200;
 
 void write_regs(u8* regs) {
     port_byte_out(0x3C2,*regs);
