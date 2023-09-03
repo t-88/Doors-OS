@@ -11,8 +11,8 @@ extern int dir_y;
 extern int mouse_x_delta;
 extern int mouse_y_delta;
 
-extern int mouse_x;
-extern int mouse_y;
+extern float mouse_x;
+extern float mouse_y;
 
 extern void mouse_init_driver();
 extern void mouse_print_debug();

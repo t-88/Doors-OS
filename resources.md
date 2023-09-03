@@ -9,4 +9,20 @@
 -   Os Dev bare bones: https://wiki.osdev.org/Bare_Bones
 
 
+# Drivers
+- [Mouse Connector](http://ohlandl.ipv7.net/parts/mouse.html#SBP-Mice)
+
+# Memory
 - [Memory Paging](http://www.osdever.net/tutorials/view/implementing-basic-paging)
+- [Devs](https://dev.to/frosnerd/writing-my-own-dynamic-memory-management-361g)
+- [Jomes Molly heap](http://www.jamesmolloy.co.uk/tutorial_html/7.-The%20Heap.html)
+- https://www.youtube.com/@nanobyte-dev/videos
+
+# Graphics
+- [Lines Mode13h](https://atrevida.comprenica.com/atrtut08.html)
+- [Vga Driver ++](https://files.osdev.org/mirrors/geezer/osd/graphics/modes.c)
+- [Vga Driver +](http://www.brokenthorn.com/Resources/OSDevVid2.html)
+- [David  Bracken graphics](http://www.brackeen.com/vga/mouse.html)
+
+# Hub
+-   http://kernelx.weebly.com/resources.html

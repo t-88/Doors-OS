@@ -4,6 +4,7 @@
 #include "types.h"
 #include "sys_std.h"
 
+typedef void* type_t;
 
 #define sti() asm volatile("sti");
 #define UN_USED(val) (void) val;

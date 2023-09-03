@@ -14,7 +14,16 @@ start:
     mov al , 3
     int 0x10
 
-    ; load 64 sector to mem for the kernel
+
+    ; get u how much memory in real mode, its 640kb
+    ; the output is put into ax
+    ; https://wiki.osdev.org/Detecting_Memory_(x86)#Detecting_Low_Memory
+    ; clc
+    ; int 0x12
+    ; mov bx , ax
+    ; call print_hex
+
+    ; load 54 sector to mem for the kernel
     ; i change dh bc i want bigger kernel i really dont know what i am doing
     ; as i understad it when i load the kernel i have unlimited accses to memery at least 4gb
     ; BUT i always come to add more sectors so meh
@@ -28,7 +37,6 @@ start:
     ; exit 16 bit mode
     mov bx, GOOD_BYE_16_BIT
     call print
-
 
 
     cli
@@ -59,6 +67,9 @@ init_pm:
     mov ebp , 0x90000
     mov esp , ebp
 
+
+
+
 call main_pm
 
 main_pm:
@@ -66,6 +77,9 @@ main_pm:
     mov bx , HELLO_32_BIT
     call print_pm
     xor edi , edi
+
+
+
 
     call KERNEL_ENTRY
     jmp $

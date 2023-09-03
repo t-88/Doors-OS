@@ -14,16 +14,19 @@ int dir_y = 0;
 int mouse_x_delta = 0;
 int mouse_y_delta = 0;
 
-int mouse_x;
-int mouse_y;
+float mouse_x;
+float mouse_y;
 
 extern u32 screen_width;
 extern u32 screen_height;
 
 void mouse_print_debug() {
-    PRINTLN("mouse:");
-    PRINT("     x: "); PRINT_INT(mouse_x); PRINTLN();
-    PRINT("     y: "); PRINT_INT(mouse_y); PRINTLN();
+    if(!mouse_x_delta && !mouse_y_delta) {
+        return;
+    }
+    // PRINTLN("mouse:");
+    // PRINT("     x: "); PRINT_INT(mouse_x); PRINTLN();
+    // PRINT("     y: "); PRINT_INT(mouse_y); PRINTLN();
 
 #if 1
     if(mouse_x_delta) {
@@ -56,15 +59,17 @@ static void mouse_callback(Intrrupt_mdata reg) {
     dir_x = (packet1 & 0x1) ? -1 : 1; packet1 >>= 1;
     dir_y = (packet1 & 0x1) ? 1 : -1; packet1 >>= 1;
     
+    io_wait();
 
     mouse_x_delta =  port_byte_in(0x60) | (dir_x == -1 ? 0xFFFFFF00 : 0);
     if(packet1 & 0x1) {
         mouse_x_delta = 0;
     }
+    io_wait();
     
     mouse_y_delta =  port_byte_in(0x60);
     if(dir_y == -1) {
-        mouse_y_delta *= -1;
+        mouse_y_delta = -mouse_y_delta;
     } else {
         mouse_y_delta = -(mouse_y_delta | 0xFFFFFF00);
     }
@@ -73,8 +78,14 @@ static void mouse_callback(Intrrupt_mdata reg) {
         mouse_y_delta = 0;
     }
 
+    if(!mouse_x_delta && !mouse_x_delta) {
+        return;   
+    }
+
+
     mouse_x += mouse_x_delta;
     mouse_y += mouse_y_delta;
+
 
     if(mouse_x  < 0) {
         mouse_x = 0;
@@ -87,8 +98,9 @@ static void mouse_callback(Intrrupt_mdata reg) {
         mouse_y = screen_height - 1;
     }
 
+
     
-    // mouse_print_debug();
+    mouse_print_debug();
 }
 
 void init_mouse_driver() {

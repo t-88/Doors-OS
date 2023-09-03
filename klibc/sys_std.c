@@ -65,3 +65,13 @@ int strlen(char str[]) {
     while (str[count++]) count++;
     return count - 1;
 }
+
+
+bool strcmp(char* str1,char* str2) {
+    u32 idx = 0;
+    while (str1[idx] && str2[idx] && str1[idx] == str2[idx]) {
+        idx++;
+    }
+
+    return !str1[idx] && !str2[idx] && str1[idx] == str2[idx];
+}

@@ -21,6 +21,7 @@ extern void kprint_char_at(uint8_t chr,int attr,int x, int y);
 extern void kprint_at(char* str,char attr,int x, int y);
 extern void kprint(char* str,char attr);
 extern void scroll_screen();
+extern void kprint_char(char* str,char attr);
 
 
 

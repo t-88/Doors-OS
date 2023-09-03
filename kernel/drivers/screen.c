@@ -46,7 +46,18 @@ void kprint_char_at(uint8_t chr,int attr,int x, int y) {
             cursor_pos -= MAX_COLS;
         }
         set_cursor_pos((cursor_pos / MAX_COLS + 1) * MAX_COLS);
+    }
+    else if(chr == 8) {
+        // backspace
+        uint32_t cursor_pos = get_cursor_pos();
+        if(cursor_pos == 0) {
+            return;
+        }
 
+        cursor_pos -= 1;
+        set_cursor_pos(cursor_pos);
+        video_mem[2 * cursor_pos] = ' ';
+        video_mem[2 * cursor_pos + 1] = attr;
     } else {
         if(x == -1 || y == -1) {
             uint32_t cursor_pos = get_cursor_pos();
@@ -72,7 +83,8 @@ void kprint_at(char* str,char attr,int x, int y) {
             kprint_char_at(str[index],attr,-1,-1);
             index++;
         }
-    } else {
+    } 
+    else {
         while (str[index]){
             kprint_char_at(str[index],attr,x+index % MAX_COLS,y + index / MAX_COLS);
             index++;
@@ -82,6 +94,9 @@ void kprint_at(char* str,char attr,int x, int y) {
 
 void kprint(char* str,char attr) {
     kprint_at(str,attr,-1,-1);
+}
+void kprint_char(char* str,char attr) {
+    kprint_char_at(str,attr,-1,-1);
 }
 
 

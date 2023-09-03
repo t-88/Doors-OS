@@ -16,6 +16,8 @@
         "paging.h": "c",
         "random": "c",
         "timer.h": "c",
-        "mem.h": "c"
+        "mem.h": "c",
+        "mouse.h": "c",
+        "io_context": "cpp"
     }
 }
