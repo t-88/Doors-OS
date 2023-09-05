@@ -23,6 +23,7 @@ MmapEntry_t mmap_entries[MMAP_ENTRIES_COUNT];
 
 
 void mmap_load_map();
+static  void mmap_compress_map();
 static const char* mmap_entry_type_to_str();
 
 
@@ -42,6 +43,25 @@ void mmap_load_map() {
 
         mmap_entry += 8 + 8 + 4 + 4;
     }
+
+    // mmap_print_map();
+    mmap_compress_map();
+}
+static void mmap_compress_map() {
+    // TODO: make sort faster 
+    // NOTE: faster sort? does it even worth it for number of elements less then 10
+    // applying bubble sort to sort the mmap_entries by start addr 
+
+    for (u8 i = 0; i < MMAP_ENTRIES_COUNT; i++) {
+        for (u8 j = 0 ; j < MMAP_ENTRIES_COUNT - 1; j++) {
+            if(mmap_entries[j].baseAddress > mmap_entries[j+1].baseAddress) {
+                MmapEntry_t temp_entry = mmap_entries[j];
+                mmap_entries[j] = mmap_entries[j+1]; 
+                mmap_entries[j+1] = temp_entry; 
+                PRINTLN("?");
+            }
+        }
+    }
 }
 
 void mmap_print_map() {
@@ -52,6 +72,7 @@ void mmap_print_map() {
         PRINTLN();
     }
 }
+
 
 static const char* mmap_entry_type_to_str(u32 type) {
     switch (type)

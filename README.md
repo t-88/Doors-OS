@@ -23,6 +23,9 @@ and the most important goal is to learn and explore
 -   \[2023-09-04]: better understanding for booting, int 0x13 
 
 
+## Dev Imgs
+![mmap](./dev-imgs/memory_map.png)
+
 ## Credits
 -   ctr-c ctr-v from [cfenollosa os dev](https://github.com/cfenollosa/os-tutorial/tree/master)
 -   ofc [os-dev](https://wiki.osdev.org/Expanded_Main_Page) 

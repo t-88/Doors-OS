@@ -3,7 +3,7 @@
 
 
 extern void int_to_str(int number, char str[]);
-extern void hex_to_str(long int number, char str[]);
+void hex_to_str(long long int number, char str[]);
 extern int strlen(char str[]);
 extern bool strcmp(char* str1,char* str2);
 
@@ -38,7 +38,7 @@ void int_to_str(int number, char str[]) {
     }
 }
 
-void hex_to_str(long int number, char str[]) {
+void hex_to_str(long long int number, char str[]) {
     str[0] = '0';
     str[1] = 'x';
     if(number == 0) {
