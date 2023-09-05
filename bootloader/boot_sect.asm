@@ -1,6 +1,9 @@
 [org 0x7c00]
 [bits 16]
-KERNEL_ENTRY equ 0x1000
+MMAP_ENTRY equ 0x1000
+KERNEL_ENTRY equ 0x1600
+
+
 
 start:
     mov [bootDrive] , dl ; storing boot drive
@@ -8,12 +11,6 @@ start:
     ; init stack
     mov bp , 0x8000
     mov sp ,  bp
-
-    ; clear screen 
-    mov ah , 0 
-    mov al , 3
-    int 0x10
-
 
     ; get u how much memory in real mode, its 640kb
     ; the output is put into ax
@@ -28,15 +25,24 @@ start:
     ; as i understad it when i load the kernel i have unlimited accses to memery at least 4gb
     ; BUT i always come to add more sectors so meh
     ;TODO: WTF IS THIS
-    mov bx , KERNEL_ENTRY
-    mov dh , 54
+    
+    mov ax , 0
+    mov es , ax 
+    
+    mov bx , MMAP_ENTRY
+    mov dh , 53
     mov dl , [bootDrive]
     call load_kernel
+
+
 
 
     ; exit 16 bit mode
     mov bx, GOOD_BYE_16_BIT
     call print
+
+    call MMAP_ENTRY
+
 
 
     cli
@@ -68,8 +74,6 @@ init_pm:
     mov esp , ebp
 
 
-
-
 call main_pm
 
 main_pm:
@@ -78,19 +82,14 @@ main_pm:
     call print_pm
     xor edi , edi
 
-
-
-
     call KERNEL_ENTRY
-    jmp $
+
 ret
 
 
-KERNEL_LOAD_FAILED_CARRY db "[Error] Failed to load kernel carry is 1" , 0
-KERNEL_LOAD_FAILED_AL db    "[Error] Failed to load kernel wrong number of sectors read", 0
-GOOD_BYE_16_BIT db          "[Info] Exiting 16 bit mode", 0
-HELLO_32_BIT db          "[Info] We are Now in 32 bit mode", 0
+GOOD_BYE_16_BIT db          "[Info] Exiting 16 bit mode", 10 , 13 ,0
 
 bootDrive db 0
 times 510 - ($ - $$) db 0 ; padding memory
 dw 0xaa55
+

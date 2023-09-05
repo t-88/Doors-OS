@@ -19,6 +19,7 @@
         "mem.h": "c",
         "mouse.h": "c",
         "io_context": "cpp",
-        "kernel.h": "c"
+        "kernel.h": "c",
+        "sstream": "c"
     }
 }

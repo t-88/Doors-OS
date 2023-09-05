@@ -27,3 +27,7 @@
 #define TERMINAL_IMPLEMENETAION_C
 #include "terminal.h"
 
+
+
+#define MMAP_IMPLEMENTATION
+#include "mmap.h"

@@ -16,3 +16,6 @@ pusha
 
 popa
 ret
+
+
+HELLO_32_BIT db          "[Info] We are Now in 32 bit mode", 0

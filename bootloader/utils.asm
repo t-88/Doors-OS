@@ -1,4 +1,5 @@
 [bits 16]
+
 load_kernel:    ; (dh , bx) 
     pusha       ;  dh => number of sectors to read starting from 1
     push dx     ;  bx => where to read those sectors
@@ -91,3 +92,11 @@ print_hex: ; (bx)
     pop dx
     pop bx
 ret
+
+
+
+
+
+
+KERNEL_LOAD_FAILED_CARRY db "[Error] Failed to load kernel carry is 1" , 0
+KERNEL_LOAD_FAILED_AL db    "[Error] Failed to load kernel wrong number of sectors read", 0

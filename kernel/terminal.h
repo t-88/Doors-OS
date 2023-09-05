@@ -4,24 +4,46 @@
 #include "screen.h"
 #include "keyboard.h"
 
+
+typedef struct TerminalCmd {
+    char cmd[10];
+    void* user_data;
+    void (*callback)(void*);
+} TerminalCmd; 
+
+
 static bool recved_cmd;
 static u32 char_count ;
 
+
 #define TERMINAL_BUFFER_MAX 25 
-char terminal_buffer[TERMINAL_BUFFER_MAX];
+static char terminal_buffer[TERMINAL_BUFFER_MAX];
+
+#define MAX_COMMANDS_COUNT 10
+static u32 commands_count;
+static TerminalCmd cmds[MAX_COMMANDS_COUNT];
+
 
 void terminal_init();
 void terminal_run();
-void terminal_handle_single_char(const char chr);
-void terminal_parse_cmd();
+static void terminal_handle_single_char(const char chr);
+static void terminal_parse_cmd();
+void terminal_add_cmd(char* cmd,void* callback, void* user_data);
+
 
 void terminal_cmd_unknown();
+void terminal_cmd_help();
 
-#define TERMINAL_IMPLEMENETAION_C 
+
+// #define TERMINAL_IMPLEMENETAION_C 
 #ifdef TERMINAL_IMPLEMENETAION_C
 void terminal_init() {
     recved_cmd = true;
     char_count =  2;
+    commands_count = 0;
+
+
+    terminal_add_cmd("help",terminal_cmd_help,0);
 }
 
 void terminal_run() {
@@ -38,7 +60,7 @@ void terminal_run() {
 }
 
 
-void terminal_handle_single_char(char chr) {
+static void terminal_handle_single_char(char chr) {
     if(chr == 0) { return; }             // skip if there is none
     
     if(chr == '\n') {
@@ -67,22 +89,42 @@ void terminal_handle_single_char(char chr) {
 
 
 void terminal_cmd_help() {
-    PRINTLN("help:");
-    PRINTLN("   ur mom: it gives you what you expect :)");
+    
+    for(u32 i = 0; i < commands_count; i++) {
+        PRINT(cmds[i].cmd); PRINTLN();
+    }
+    
 }
 
 void terminal_cmd_unknown() {
     PRINTLN("uknown command provided, to get command list type help");
 }
 
-void terminal_parse_cmd() {
-    if(strcmp(terminal_buffer,"ur mom")) {
-        PRINTLN("ur mom too, right back at u");
-    } else if(strcmp(terminal_buffer,"help")) {
-        terminal_cmd_help();
+static void terminal_parse_cmd() {
+    for(u32 i = 0; i < commands_count; i++) {
+        if(strcmp(terminal_buffer,cmds[i].cmd)) {
+            cmds[i].callback(cmds[i].user_data);
+            return;
+        }
     }
-    else {
-        terminal_cmd_unknown();
-    }
+    terminal_cmd_unknown();
+
+}
+
+void terminal_add_cmd(char* cmd_text,void* callback, void* user_data) {
+    TerminalCmd cmd;
+
+    u8 idx = 0;
+    while(cmd_text[idx]) { cmd.cmd[idx] = cmd_text[idx]; idx++; }
+    cmd.cmd[idx] = '\0';
+
+    cmd.callback = callback;
+    cmd.user_data = user_data;
+
+    cmds[commands_count++] = cmd;
+    
+    if(commands_count == MAX_COMMANDS_COUNT) {
+        PANIC("[Terminal Err] reached the MAX_COMMANDS_COUNT");
+    } 
 }
 #endif

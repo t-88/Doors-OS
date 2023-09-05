@@ -8,8 +8,8 @@ after reading the [beginner mistakes](https://wiki.osdev.org/Beginner_Mistakes) 
 -   getting keyboad input [Done]
 -   mouse Input [Done]
 -   VGA driver [Done]
--   building a repl (read excute print loop)
--   making some game
+-   building a repl (read excute print loop) [Done]
+-   making some game 
 and the most important goal is to learn and explore     
 
 ## How To Run
@@ -20,7 +20,7 @@ and the most important goal is to learn and explore
 
 ## Personal Notes
 -   day and a half for not copying code right, in idt the low then the hight addr, fuck that too long, dang it.
-
+-   \[2023-09-04]: better understanding for booting, int 0x13 
 
 
 ## Credits
