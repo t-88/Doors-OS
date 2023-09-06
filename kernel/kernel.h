@@ -31,3 +31,7 @@
 
 #define MMAP_IMPLEMENTATION
 #include "mmap.h"
+
+
+#define VGA_IMPLEMENTATION
+#include "vga.h"

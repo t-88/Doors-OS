@@ -2,10 +2,13 @@
 #include "shared.h"
 
 
-extern void int_to_str(int number, char str[]);
+void int_to_str(int number, char str[]);
 void hex_to_str(long long int number, char str[]);
-extern int strlen(char str[]);
-extern bool strcmp(char* str1,char* str2);
+int strlen(char str[]);
+bool strcmp(char* str1,char* str2);
+
+
+u64 power(u64 a,u64 b);
 
 
 
@@ -82,5 +85,14 @@ bool strcmp(char* str1,char* str2) {
     }
 
     return !str1[idx] && !str2[idx] && str1[idx] == str2[idx];
+}
+
+
+u64 power(u64 a,u64 b) {
+    u64 tmp = 1;
+    for (u64 i = 0; i < b; i++) {
+        tmp = a * tmp;
+    }
+    return tmp;    
 }
 #endif

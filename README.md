@@ -25,6 +25,7 @@ and the most important goal is to learn and explore
 
 ## Dev Imgs
 ![mmap](./dev-imgs/memory_map.png)
+![basic terminal overview](./dev-imgs/terminal_overview.gif)
 
 ## Credits
 -   ctr-c ctr-v from [cfenollosa os dev](https://github.com/cfenollosa/os-tutorial/tree/master)

@@ -67,8 +67,8 @@ static void mmap_compress_map() {
 void mmap_print_map() {
     for (u8 i = 0; i < MMAP_ENTRIES_COUNT; i++) {
         PRINT("baseAddress: ");PRINT_HEX(mmap_entries[i].baseAddress);
-        PRINT("      length     : ");PRINT_HEX(mmap_entries[i].length);
-        PRINT("      type       : ");PRINT(mmap_entry_type_to_str(mmap_entries[i].type));
+        PRINT("    length     : ");PRINT_HEX(mmap_entries[i].length);
+        PRINT("    type       : ");PRINT(mmap_entry_type_to_str(mmap_entries[i].type));
         PRINTLN();
     }
 }

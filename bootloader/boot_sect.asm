@@ -26,6 +26,7 @@ start:
     ; BUT i always come to add more sectors so meh
     ;TODO: WTF IS THIS
     
+
     mov ax , 0
     mov es , ax 
     
@@ -36,10 +37,11 @@ start:
 
 
 
-
     ; exit 16 bit mode
     mov bx, GOOD_BYE_16_BIT
     call print
+
+
 
     call MMAP_ENTRY
 
