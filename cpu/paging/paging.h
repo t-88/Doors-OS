@@ -113,8 +113,8 @@ Page* get_page(u32 addr,bool make,PageDir* dir) {
     if(dir->tables[idx] != 0) {
         return &dir->tables[idx]->pages[addr % 1024];
     } else if(make) {
-        page_dir->tables[idx] = kmalloc(sizeof(PageTable),1,0);
-        memset(&page_dir->tables[idx]->pages,0,1024);
+        page_dir->tables[idx] = (PageTable*) kmalloc(sizeof(PageTable),1,0);
+        memset((void*) &page_dir->tables[idx]->pages,0,1024);
         page_dir->tables_phy[idx] = ((u32) page_dir->tables[idx] | 0x3);
         return &dir->tables[idx]->pages[addr % 1024];
     }
@@ -123,12 +123,12 @@ Page* get_page(u32 addr,bool make,PageDir* dir) {
 void paging_init() {
     u32 mem_size = 0x1000000;
     nframes = mem_size / 0x1000;
-    frames = kmalloc(BIT_INDEX(nframes),0,0);
+    frames = (u32*) kmalloc(BIT_INDEX(nframes),0,0);
     memset(frames,0,BIT_INDEX(nframes));
     
 
-    page_dir = kmalloc(sizeof(PageDir),1,0);
-    memset(page_dir->tables,0,1024);
+    page_dir = (PageDir*) kmalloc(sizeof(PageDir),1,0);
+    memset((void*)page_dir->tables,0,1024);
 
     unsigned long i = 0;
     while (i < free_mem_addr) {
@@ -141,7 +141,7 @@ void paging_init() {
     
 
     page_dir->table_addr = page_dir->tables_phy[0];
-    paging_enable(&page_dir->table_addr);    
+    paging_enable((u32) &page_dir->table_addr);    
 }
 
 void page_fault(Intrrupt_mdata regs) {
@@ -152,7 +152,7 @@ void page_fault(Intrrupt_mdata regs) {
     bool rw = !(regs.err_code & 0x2);
     bool user = !(regs.err_code & 0x4);
     bool reserved = !(regs.err_code & 0x8);
-    int id = !(regs.err_code & 0x10);
+    // int id = !(regs.err_code & 0x10);
 
     printf("Page Fault \n");
     if(!p) printf("-    not present\n"); 

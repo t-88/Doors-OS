@@ -76,7 +76,7 @@ const u8 vga_mode_13[] = {
 
 void vga_init() {
     frame_buffer = (u32*) 0xA0000;
-    mem = kmalloc(4 * 200 * 80,0,0);
+    mem = (u64*) kmalloc(4 * 200 * 80,0,0);
 }
 void vga_load_mode(DisplayMode mode) {
     curr_mode = mode;

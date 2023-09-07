@@ -218,6 +218,8 @@ static const char keyboard_scanecode_to_char(u32 code) {
         case Keypad: return '\0';
         case LAlt: return '\0';
         case Space: return ' ';
+        
+        default: break;
     }
     PANIC("some scancodes are not implemented yet");
 }
@@ -303,7 +305,8 @@ void keyboard_print_key(Keyboard_Key key) {
         case Rshift: printf("Rshift"); break;
         case Keypad: printf("Keypad"); break;
         case LAlt: printf("LAlt"); break;
-        case Space: printf("Space"); break;            
+        case Space: printf("Space"); break; 
+        default: break;
     }
 }
 void keyboard_print_char(u16 scancode) {

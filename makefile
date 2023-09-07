@@ -1,7 +1,7 @@
 INCLUDES = -Ikernel/drivers -Ikernel/memory -Icpu/ -Iklibc/ -Icpu/paging/
-CC = gcc -g -m32 -fno-pie  -ffreestanding -fno-stack-protector
+CC = gcc -g -m32 -fno-pie  -ffreestanding -fno-stack-protector -Wall
 # TODO: fix all warning
-#  -Wall
+
 
 LD = ld -m elf_i386
 KERNEL_ENTRY = 0x1600

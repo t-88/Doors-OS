@@ -93,7 +93,7 @@ void printf(const char* fmt,...) {
 
 
             if(*fmt == 'c') { 
-                kprintc(va_arg(ap,char*));
+                kprintc((char)va_arg(ap,int));
             }
             else if(*fmt == 's') {
                 if(number_buffer_i != 0) {

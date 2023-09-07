@@ -21,9 +21,9 @@ static void clear_screen();
 static void scroll_screen();
 
 
-extern void kprint_char_at(char* chr,int attr,int x, int y);
+extern void kprint_char_at(char chr,int attr,int x, int y);
 extern void kprint_str_at(char* str,char attr,int x, int y);
-extern void kprintc(char* str);
+extern void kprintc(char str);
 extern void kprints(char* str);
 void kprints_sized(char* str,int size);
 #endif
@@ -75,7 +75,7 @@ static uint32_t get_cursor_pos() {
 }
 
 
-void kprint_char_at(char* chr,int attr,int x, int y) {
+void kprint_char_at(char chr,int attr,int x, int y) {
     if(attr < 0) {
         attr = ATTR_WHITE_ON_BLACK;
     }
@@ -131,7 +131,7 @@ void kprint_str_at(char* str,char attr,int x, int y) {
         }
     }
 }
-void kprintc(char* str) {
+void kprintc(char str) {
     kprint_char_at(str,-1,-1,-1);
 }
 void kprints_sized(char* str,int size) { 

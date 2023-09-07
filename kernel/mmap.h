@@ -68,7 +68,7 @@ static void mmap_compress_map() {
 
 void mmap_print_map() {
     for (u8 i = 0; i < MMAP_ENTRIES_COUNT; i++) {
-        printf("baseAddress: %10lx, length %9lx, type: %s\n",
+        printf("baseAddress: %9lx, length %8lx, type: %s\n",
                             mmap_entries[i].baseAddress,
                             mmap_entries[i].length,
                             mmap_entry_type_to_str(mmap_entries[i].type)
@@ -88,10 +88,10 @@ static const char* mmap_entry_type_to_str(u32 type) {
             return "ACPI";
         case EntryType_ACPI_NVS:
             return "ACPI_NVS";
-        default:
-            return "Reserved";
-            return;
+        default: break;
     }
+
+    return "Reserved";
 }
 
 #endif
