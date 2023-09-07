@@ -1,9 +1,9 @@
-#pragma once
-
 #include "shared.h"
-#include "screen.h"
 #include "keyboard.h"
+#include "print.h"
 
+#ifndef TERMINAL_H_
+#define TERMINAL_H_
 
 typedef struct TerminalCmd {
     char cmd[10];
@@ -35,6 +35,8 @@ void terminal_cmd_unknown();
 void terminal_cmd_help();
 
 
+#endif 
+
 // #define TERMINAL_IMPLEMENETAION_C 
 #ifdef TERMINAL_IMPLEMENETAION_C
 void terminal_init() {
@@ -51,7 +53,7 @@ void terminal_run() {
         // new line terminal '> '
         if(recved_cmd) {
             recved_cmd = false;
-            PRINT("> ");
+            printf("> ");
         }
         
         const char chr = keyboard_pop_from_buffer(); // read input
@@ -64,7 +66,7 @@ static void terminal_handle_single_char(char chr) {
     if(chr == 0) { return; }             // skip if there is none
     
     if(chr == '\n') {
-        PRINTLN();
+        printf("\n");
         terminal_buffer[char_count - 2] = '\0';
         terminal_parse_cmd();
 
@@ -76,11 +78,11 @@ static void terminal_handle_single_char(char chr) {
             if(char_count > 2) {
                 char_count--;
                 
-                kprint_char((char*)chr,-1);
+                printf("%c",chr);
                 return;
             }
         } else {
-            kprint_char((char*)chr,-1);
+            printf("%c",chr);
             terminal_buffer[char_count - 2] = chr;
             char_count++;
         }
@@ -89,15 +91,15 @@ static void terminal_handle_single_char(char chr) {
 
 
 void terminal_cmd_help() {
-    
+    printf("cmds:\n");
     for(u32 i = 0; i < commands_count; i++) {
-        PRINT(cmds[i].cmd); PRINTLN();
+        printf("    - %s\n",cmds[i].cmd);
     }
     
 }
 
 void terminal_cmd_unknown() {
-    PRINTLN("uknown command provided, to get command list type help");
+    printf("uknown command provided, to get command list type help\n");
 }
 
 static void terminal_parse_cmd() {

@@ -19,7 +19,6 @@ void kernel_init() {
 
 
     // paging_init();
-
 }
 
 
@@ -44,4 +43,6 @@ void kernel_main() {
     terminal_add_cmd("mmap",mmap_print_map,0);
     terminal_add_cmd("vga",vga_graphics,0);
     terminal_run();
+
+    STOP;
 }

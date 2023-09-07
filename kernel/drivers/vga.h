@@ -1,7 +1,15 @@
-#pragma once
+
 #include "shared.h"
 #include "port.h"
 
+#ifndef VGA_H_
+#define VGA_H_
+
+//NOTE:
+// vga is backward compatable with ega, i guess it explains the 64 colors instead of 256
+// i have to do stuff in color palate option of vga to changes it
+//TODO:
+// add support for 256 colors
 
 typedef enum DisplayMode {
     DisplayMode_320x200x256, // mode 13
@@ -47,6 +55,8 @@ void (*gfx_draw_pixel)(u32 x,u32 y,u8 c);
 void (*gfx_draw_rect)(u32 x,u32 y,u32 w, u32 h,u8 c);
 
 
+#endif
+
 // #define VGA_IMPLEMENTATION
 #ifdef VGA_IMPLEMENTATION
 const u8 vga_mode_13[] = {
@@ -65,7 +75,7 @@ const u8 vga_mode_13[] = {
 
 
 void vga_init() {
-    frame_buffer = 0xA0000;
+    frame_buffer = (u32*) 0xA0000;
     mem = kmalloc(4 * 200 * 80,0,0);
 }
 void vga_load_mode(DisplayMode mode) {
@@ -79,7 +89,7 @@ void vga_load_mode(DisplayMode mode) {
             gfx_draw_pixel = gfx_draw_pixel_320x200x256;
             gfx_draw_rect = gfx_draw_rect_320x200x256;
 
-            vga_load_mode_general(vga_mode_13);
+            vga_load_mode_general((u8*) vga_mode_13);
         break;
         default:
             Unreachable("[Error] vga_load_mode unknown mode");

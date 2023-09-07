@@ -1,6 +1,9 @@
-#pragma once
 #include "shared.h"
 #include "port.h"
+
+#ifndef PIC_H_
+#define PIC_H_
+
 
 #define PIC1 0x20
 #define PIC1_CMD PIC1
@@ -34,9 +37,9 @@
 extern void PIC_send_eoi(u8 irq);
 extern void PIC_remap(int offset1,int offset2);
 
+#endif
 
-
-#define PIC_IMPLEMENTATION_C
+// #define PIC_IMPLEMENTATION_C
 #ifdef PIC_IMPLEMENTATION_C
 void PIC_send_eoi(u8 irq) {
     if(irq >= PIC2_OFFSET)

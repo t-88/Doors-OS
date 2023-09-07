@@ -1,16 +1,17 @@
-#pragma once
 #include "shared.h"
 
+
+#ifndef SYS_STD_H
+#define SYS_STD_H
 
 void int_to_str(int number, char str[]);
 void hex_to_str(long long int number, char str[]);
 int strlen(char str[]);
 bool strcmp(char* str1,char* str2);
 
-
 u64 power(u64 a,u64 b);
 
-
+#endif
 
 #ifdef SYS_STD_IMPLEMENTATION_C
 void int_to_str(int number, char str[]) {
@@ -95,4 +96,6 @@ u64 power(u64 a,u64 b) {
     }
     return tmp;    
 }
+
+
 #endif

@@ -1,7 +1,8 @@
-#pragma once
 
 #include "shared.h"
 
+#ifndef MEM_H_
+#define MEM_H_
 
 #define PAGE_SIZE 0x1000
 #define FIRST_PAGE 0x1000
@@ -14,10 +15,9 @@ extern u32 kmalloc(u32 size,bool aligned,u32* phy);
 extern void memset(u32 *addr, u32 value, u32 nbytes);
 
 
-
+#endif
 
 #ifdef MEM_IMPLEMENTAION_C
-
 
 u32 free_mem_addr = 2*FIRST_PAGE;
 

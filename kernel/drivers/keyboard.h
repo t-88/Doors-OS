@@ -1,6 +1,8 @@
-#pragma once
 #include "shared.h"
 #include "isr.h"
+
+#ifndef KEYBOARD_H_
+#define KEYBOARD_H_
 
 typedef enum Keyboard_Key {
     ESC,
@@ -76,7 +78,7 @@ int keyboard_char_buffer_index = 0;
 void init_keyboard_driver();
 static void keyboard_callback(Intrrupt_mdata reg);
 
-void print_char(u16 scancode);
+void keyboard_print_char(u16 scancode);
 void keybaord_wait_char(const char _char);
 void keyboard_key_down(u32 scancode);
 void keyboard_key_up(u32 scancode);
@@ -84,8 +86,10 @@ void keyboard_key_up(u32 scancode);
 void keyboard_push_to_buffer(u32 scancode);
 const char keyboard_pop_from_buffer();
 
+#endif
 
-#ifdef KEYBOARD_DRIVER_IMPLEMENTATION
+// #define KEYBOARD_IMPLEMENTATION_C
+#ifdef KEYBOARD_IMPLEMENTATION_C
 
 void init_keyboard_driver() {
     irq_register_handler(IRQ1,keyboard_callback);
@@ -215,8 +219,6 @@ static const char keyboard_scanecode_to_char(u32 code) {
         case LAlt: return '\0';
         case Space: return ' ';
     }
-    PRINT_INT(code);
-    PRINT_INT(Space);
     PANIC("some scancodes are not implemented yet");
 }
 
@@ -246,73 +248,73 @@ const char keyboard_pop_from_buffer() {
 
 void keyboard_print_key(Keyboard_Key key) {
     switch (key) {
-        case ESC: kprint("ESC",-1); break;
-        case NUM_1: kprint("NUM_1",-1); break;
-        case NUM_2: kprint("NUM_2",-1); break;
-        case NUM_3: kprint("NUM_3",-1); break;
-        case NUM_4: kprint("NUM_4",-1); break;
-        case NUM_5: kprint("NUM_5",-1); break;
-        case NUM_6: kprint("NUM_6",-1); break;
-        case NUM_7: kprint("NUM_7",-1); break;
-        case NUM_8: kprint("NUM_8",-1); break;
-        case NUM_9: kprint("NUM_9",-1); break;
-        case NUM_0: kprint("NUM_0",-1); break;
-        case Minus: kprint("Minus",-1); break;
-        case Plus: kprint("Plus",-1); break;
-        case Backspace: kprint("Backspace",-1); break;
-        case Tab: kprint("Tab",-1); break;
-        case Q: kprint("Q",-1); break;
-        case W: kprint("W",-1); break;
-        case E: kprint("E",-1); break;
-        case R: kprint("R",-1); break;
-        case T: kprint("T",-1); break;
-        case Y: kprint("Y",-1); break;
-        case U: kprint("U",-1); break;
-        case I: kprint("I",-1); break;
-        case O: kprint("O",-1); break;
-        case P: kprint("P",-1); break;
-        case SQR_PRA_OPEN: kprint("SQR_PRA_OPEN",-1); break;
-        case SQR_PRA_CLOSE: kprint("SQR_PRA_CLOSE",-1); break;
-        case Enter: kprint("Enter",-1); break;
-        case LCtrl: kprint("LCtrl",-1); break;
-        case A: kprint("A",-1); break;
-        case S: kprint("S",-1); break;
-        case D: kprint("D",-1); break;
-        case F: kprint("F",-1); break;
-        case G: kprint("G",-1); break;
-        case H: kprint("H",-1); break;
-        case J: kprint("J",-1); break;
-        case K: kprint("K",-1); break;
-        case L: kprint("L",-1); break;
-        case SemiColon: kprint("SemiColon",-1); break;
-        case Apostrophe: kprint("Apostrophe",-1); break;
-        case BackTick: kprint("BackTick",-1); break;
-        case LShift: kprint("LShift",-1); break;
-        case BackSlash: kprint("BackSlash",-1); break;
-        case Z: kprint("Z",-1); break;
-        case X: kprint("X",-1); break;
-        case C: kprint("C",-1); break;
-        case V: kprint("V",-1); break;
-        case B: kprint("B",-1); break;
-        case N: kprint("N",-1); break;
-        case M: kprint("M",-1); break;
-        case Comma: kprint("Comma",-1); break;
-        case Div: kprint("Div",-1); break;
-        case Rshift: kprint("Rshift",-1); break;
-        case Keypad: kprint("Keypad",-1); break;
-        case LAlt: kprint("LAlt",-1); break;
-        case Space: kprint("Space",-1); break;            
+        case ESC: printf("ESC"); break;
+        case NUM_1: printf("NUM_1"); break;
+        case NUM_2: printf("NUM_2"); break;
+        case NUM_3: printf("NUM_3"); break;
+        case NUM_4: printf("NUM_4"); break;
+        case NUM_5: printf("NUM_5"); break;
+        case NUM_6: printf("NUM_6"); break;
+        case NUM_7: printf("NUM_7"); break;
+        case NUM_8: printf("NUM_8"); break;
+        case NUM_9: printf("NUM_9"); break;
+        case NUM_0: printf("NUM_0"); break;
+        case Minus: printf("Minus"); break;
+        case Plus: printf("Plus"); break;
+        case Backspace: printf("Backspace"); break;
+        case Tab: printf("Tab"); break;
+        case Q: printf("Q"); break;
+        case W: printf("W"); break;
+        case E: printf("E"); break;
+        case R: printf("R"); break;
+        case T: printf("T"); break;
+        case Y: printf("Y"); break;
+        case U: printf("U"); break;
+        case I: printf("I"); break;
+        case O: printf("O"); break;
+        case P: printf("P"); break;
+        case SQR_PRA_OPEN: printf("SQR_PRA_OPEN"); break;
+        case SQR_PRA_CLOSE: printf("SQR_PRA_CLOSE"); break;
+        case Enter: printf("Enter"); break;
+        case LCtrl: printf("LCtrl"); break;
+        case A: printf("A"); break;
+        case S: printf("S"); break;
+        case D: printf("D"); break;
+        case F: printf("F"); break;
+        case G: printf("G"); break;
+        case H: printf("H"); break;
+        case J: printf("J"); break;
+        case K: printf("K"); break;
+        case L: printf("L"); break;
+        case SemiColon: printf("SemiColon"); break;
+        case Apostrophe: printf("Apostrophe"); break;
+        case BackTick: printf("BackTick"); break;
+        case LShift: printf("LShift"); break;
+        case BackSlash: printf("BackSlash"); break;
+        case Z: printf("Z"); break;
+        case X: printf("X"); break;
+        case C: printf("C"); break;
+        case V: printf("V"); break;
+        case B: printf("B"); break;
+        case N: printf("N"); break;
+        case M: printf("M"); break;
+        case Comma: printf("Comma"); break;
+        case Div: printf("Div"); break;
+        case Rshift: printf("Rshift"); break;
+        case Keypad: printf("Keypad"); break;
+        case LAlt: printf("LAlt"); break;
+        case Space: printf("Space"); break;            
     }
 }
-void print_char(u16 scancode) {
+void keyboard_print_char(u16 scancode) {
     if(scancode == 0) {
-        PRINTLN("ERROR");
+        printf("ERROR\n");
     } else if(scancode >= 0x1 && scancode <= 0x39) {
         // keydown
         keyboard_wait_char_down = true;
         last_char = scancode - 1;
     } else if(scancode <= 0x7f) {
-        PRINTLN("Unknown key down");
+        printf("Unknown key down\n");
     } else if (scancode <= 0x39 + 0x80) {
         // keyup
         keyboard_wait_char_up = true;
@@ -321,7 +323,7 @@ void print_char(u16 scancode) {
 
     // TODO: maybe ignore unkown chars or just print them
     // well its reachable, arrow keys and stuff,
-    // Unreachable(" unreachable code in print_char ");
+    // Unreachable(" unreachable code in keyboard_print_char ");
     // for (;;){}
     // kprint("\n",-1);
 
@@ -330,8 +332,6 @@ void print_char(u16 scancode) {
 
 static void keyboard_callback(Intrrupt_mdata reg) {
     u8 scancode = port_byte_in(0x60);
-    UN_USED(reg);
-    UN_USED(scancode);
 
     if(scancode >= 0x1 && scancode <= 0x39) {
         keyboard_key_down(scancode - 1);
@@ -339,7 +339,7 @@ static void keyboard_callback(Intrrupt_mdata reg) {
         keyboard_key_up(scancode - 1 - 0x80);
     }
 
-    // print_char(scancode);
+    // keyboard_print_char(scancode);
 }
 
 

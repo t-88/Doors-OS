@@ -1,10 +1,12 @@
-#pragma once
+
 #include "shared.h"
-#include "screen.h"
-#include "idt.h"
-#include "isr.h"
-#include "sys_std.h"
 #include "pic.h"
+#include "print.h"
+
+#include "idt.h"
+
+#ifndef ISR_H_
+#define ISR_H_
 
 
 /* ISRs reserved for CPU exceptions */
@@ -93,7 +95,7 @@ extern void irq_register_handler(u8 n, isr_t handler);
 extern void irq_handler(Intrrupt_mdata r);
 
 
-
+#endif
 
 // #define ISR_IMPLEMENTATION_C
 #ifdef ISR_IMPLEMENTATION_C
@@ -154,22 +156,16 @@ void isr_init() {
     idt_setup(); // Load with ASM
 }
 
+extern void page_fault(Intrrupt_mdata regs);
 void isr_handler(Intrrupt_mdata r) {
-    kprint("received interrupt: ",-1);
-    char str[5];
-    int_to_str(r.int_no,str);
-    kprint(str,-1);
-    kprint("\n",-1);
-
-    if(r.int_no == 14) {
-        page_fault(r);
-    }
+    printf("received interrupt: %d\n",r.int_no);
+    if(r.int_no == 14) { page_fault(r); }
 }
-
 
 inline void irq_register_handler(u8 n, isr_t handler) {
     interrupt_handlers[n] = handler;
 }
+
 void irq_handler(Intrrupt_mdata r) {
     PIC_send_eoi(r.int_no);
     if (interrupt_handlers[r.int_no] != 0) {

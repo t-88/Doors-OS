@@ -1,51 +1,32 @@
-#pragma once
-
 #include "shared.h"
 #include "port.h"
 #include "mem.h"
 
+
+
+#ifndef SCREEN_H_
+#define SCREEN_H_
 
 #define VIDEO_MEM 0xb8000 
 #define MAX_ROWS 25 
 #define MAX_COLS 80 
 #define ATTR_WHITE_ON_BLACK 0x0F
 
-extern uint8_t* video_mem;
-
+uint8_t* video_mem;
     
 extern void init_screen_driver();
-extern uint32_t get_cursor_pos();
-extern void set_cursor_pos(uint32_t);
-extern void clear_screen();
-extern void kprint_char_at(uint8_t chr,int attr,int x, int y);
-extern void kprint_at(char* str,char attr,int x, int y);
-extern void kprint(char* str,char attr);
-extern void scroll_screen();
-extern void kprint_char(char* str,char attr);
+static uint32_t get_cursor_pos();
+static void set_cursor_pos(uint32_t);
+static void clear_screen();
+static void scroll_screen();
 
 
+extern void kprint_char_at(char* chr,int attr,int x, int y);
+extern void kprint_str_at(char* str,char attr,int x, int y);
+extern void kprintc(char* str);
+extern void kprints(char* str);
 
-#define PRINT_HEX(number) do {\
-    char str[100];\
-    hex_to_str(number,str);\
-    kprint(str,-1);\
-} while (0);
-
-#define PRINT_INT(number) do {\
-    char str[100];\
-    int_to_str(number,str);\
-    kprint(str,-1);\
-} while (0);
-
-
-#define PRINT(str) do {\
-    kprint(str,-1);\
-} while (0);
-
-#define PRINTLN(str) do {\
-    kprint(str"\n",-1);\
-} while (0);
-
+#endif
 
 // #define SCREEN_IMPLEMENTATION_C
 #ifdef SCREEN_IMPLEMENTATION_C
@@ -56,16 +37,13 @@ void init_screen_driver() {
     video_mem = (uint8_t*) VIDEO_MEM;
 }
 
-
-void set_cursor_pos(uint32_t cursor_pos) {
+static void set_cursor_pos(uint32_t cursor_pos) {
     port_byte_out(0x3d4,14);
     port_byte_out(0x3d5,cursor_pos >> 8);
     port_byte_out(0x3d4,15);
     port_byte_out(0x3d5,cursor_pos & 0xFF);
 }
-
-
-void clear_screen() {
+static void clear_screen() {
     for (int i = 0; i < MAX_COLS * MAX_ROWS; i++) {
         video_mem[2 * i]  = ' ';
         video_mem[2 * i + 1]  = 0x0F;
@@ -73,8 +51,7 @@ void clear_screen() {
 
     set_cursor_pos(0);
 }
-
-void scroll_screen() {
+static void scroll_screen() {
     for (int y = 0; y < MAX_ROWS; y++) {
         for (int x = 0; x < MAX_COLS; x++) {
             kmemcpy(
@@ -85,7 +62,20 @@ void scroll_screen() {
         }
     }
 }
-void kprint_char_at(uint8_t chr,int attr,int x, int y) {
+static uint32_t get_cursor_pos() {
+    uint32_t cursor_pos;
+    
+    port_byte_out(0x3d4,14);
+    cursor_pos =  port_byte_in(0x3d5);
+    cursor_pos <<= 8;
+    port_byte_out(0x3d4,15);
+    cursor_pos |=  port_byte_in(0x3d5);
+
+    return cursor_pos;
+}
+
+
+void kprint_char_at(char* chr,int attr,int x, int y) {
     if(attr < 0) {
         attr = ATTR_WHITE_ON_BLACK;
     }
@@ -126,7 +116,7 @@ void kprint_char_at(uint8_t chr,int attr,int x, int y) {
         }
     }
 }
-void kprint_at(char* str,char attr,int x, int y) {
+void kprint_str_at(char* str,char attr,int x, int y) {
     int index = 0;
     if(x == -1 || y == -1) {
         while (str[index]){
@@ -141,25 +131,11 @@ void kprint_at(char* str,char attr,int x, int y) {
         }
     }
 }
-
-void kprint(char* str,char attr) {
-    kprint_at(str,attr,-1,-1);
+void kprintc(char* str) {
+    kprint_char_at(str,-1,-1,-1);
 }
-void kprint_char(char* str,char attr) {
-    kprint_char_at(str,attr,-1,-1);
-}
-
-
-uint32_t get_cursor_pos() {
-    uint32_t cursor_pos;
-    
-    port_byte_out(0x3d4,14);
-    cursor_pos =  port_byte_in(0x3d5);
-    cursor_pos <<= 8;
-    port_byte_out(0x3d4,15);
-    cursor_pos |=  port_byte_in(0x3d5);
-
-    return cursor_pos;
+void kprints(char* str) {
+    kprint_str_at(str,-1,-1,-1);
 }
 
 

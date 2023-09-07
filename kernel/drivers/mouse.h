@@ -1,5 +1,10 @@
-#pragma once
-#include "types.h"
+#include "shared.h"
+#include "print.h"
+#include "isr.h"
+
+
+#ifndef MOUSE_H_
+#define MOUSE_H_
 
 extern bool mouse_down;
 extern bool mouse_left;
@@ -19,7 +24,7 @@ extern void mouse_print_debug();
 
 
 
-// #define MOUSE_IMPLEMENTATION_C
+#define MOUSE_IMPLEMENTATION_C
 #ifdef MOUSE_IMPLEMENTATION_C
 
 bool mouse_down = false;
@@ -38,30 +43,26 @@ float mouse_y;
 extern u32 screen_width;
 extern u32 screen_height;
 
+#endif
 
 void mouse_print_debug() {
-    if(!mouse_x_delta && !mouse_y_delta) {
-        return;
-    }
-    // PRINTLN("mouse:");
-    // PRINT("     x: "); PRINT_INT(mouse_x); PRINTLN();
-    // PRINT("     y: "); PRINT_INT(mouse_y); PRINTLN();
+    if(!mouse_x_delta && !mouse_y_delta) { return; }
 
-#if 1
+    printf("mouse:\n");
+    printf("    x: %d\n",mouse_x);
+    printf("    y: %d\n",mouse_y);
+
     if(mouse_x_delta) {
-        PRINT("     delta x: "); PRINT_INT(mouse_x_delta); PRINTLN();
-        PRINT("     dir x: "); PRINT_INT(dir_x); PRINTLN();
+        printf("     delta x: %d \n",mouse_x_delta); 
+        printf("     dir x:   %d \n",dir_x);         
     }
     if(mouse_y_delta) {
-        PRINT("     delta y: "); PRINT_INT(mouse_y_delta); PRINTLN();
-        PRINT("     dir y: "); PRINT_INT(dir_y); PRINTLN();
+        printf("     delta y: %d \n",mouse_y_delta); 
+        printf("     dir y:   %d \n",dir_y);         
     }
-#endif
 }
 
 static void mouse_callback(Intrrupt_mdata reg) {
-//     UN_USED(reg);
-//     // PRINTLN("-------------------*mouse works*------------------");
     
 //     // y-overflow|x-overflow|y-sign|x-sign|1|m-btn|r-btn|l-btn
 //     u8 packet1 =  port_byte_in(0x60);

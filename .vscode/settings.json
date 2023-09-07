@@ -20,6 +20,11 @@
         "mouse.h": "c",
         "io_context": "cpp",
         "kernel.h": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "varargs.h": "c",
+        "stdarg.h": "c",
+        "vga.h": "c",
+        "print.h": "c",
+        "macros.h": "c"
     }
 }

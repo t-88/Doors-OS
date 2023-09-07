@@ -1,9 +1,12 @@
-#pragma once 
 #include "shared.h"
-#include "isr.h"
 #include "mem.h"
+#include "isr.h"
 
+#define BIT_INDEX(a) ((a)/(32))
+#define BIT_OFFSET(a) ((a)%(32))
 
+#ifndef PAGING_H_
+#define PAGING_H_
 
 
 
@@ -39,10 +42,8 @@ extern void paging_enable(u32 addr);
 extern u32* frames;
 extern u32 nframes;
 
-#define BIT_INDEX(a) ((a)/(32))
-#define BIT_OFFSET(a) ((a)%(32))
 
-
+#endif
 
 // #define PAGING_IMPLEMENTATION_C
 #ifdef PAGING_IMPLEMENTATION_C
@@ -59,13 +60,13 @@ static void frame_set(u32 frame_addr) {
     frames[idx] |=  (0x1 << offset);
 }
 
-static void frame_clear(u32 frame_addr) {
-    u32 frame = frame_addr / 0x1000;
-    u32 idx = BIT_INDEX(frame);
-    u32 offset = BIT_OFFSET(frame);
-
-    frames[idx] &=  ~(0x1 << offset);
-}
+// static void frame_clear(u32 frame_addr) {
+    // u32 frame = frame_addr / 0x1000;
+    // u32 idx = BIT_INDEX(frame);
+    // u32 offset = BIT_OFFSET(frame);
+// 
+    // frames[idx] &=  ~(0x1 << offset);
+// }
 
 
 static u32 frame_first_free() {
@@ -84,12 +85,8 @@ static u32 frame_first_free() {
 
 
 void frame_alloc(Page* page,bool is_kernel,bool is_writable) {
-
-
     if(page->frame) {
-        PRINT_HEX(page->frame)
-        PRINTLN("");
-        STOP;
+        printf("%x\n",page->frame);
         return;
     }
 
@@ -148,7 +145,6 @@ void paging_init() {
 }
 
 void page_fault(Intrrupt_mdata regs) {
-    UN_USED(regs);
     u32 fault_addr;
     asm volatile("mov %%cr2 ,%0":"=r"(fault_addr));
 
@@ -157,18 +153,14 @@ void page_fault(Intrrupt_mdata regs) {
     bool user = !(regs.err_code & 0x4);
     bool reserved = !(regs.err_code & 0x8);
     int id = !(regs.err_code & 0x10);
-    UN_USED(id);
 
-    kprint("Page Fault \n",-1);
-    if(!p) kprint("-    not present\n",-1); 
-    if(rw) kprint("-    readonly\n",-1); 
-    if(user) kprint("-    user-mode\n",-1); 
-    if(reserved) kprint("-    reserved\n",-1);
+    printf("Page Fault \n");
+    if(!p) printf("-    not present\n"); 
+    if(rw) printf("-    readonly\n"); 
+    if(user) printf("-    user-mode\n"); 
+    if(reserved) printf("-    reserved\n");
 
-
-    kprint("at addr: ",-1);
-    PRINT_HEX(fault_addr);
-    kprint("\n",-1);
+    printf("at addr: %x\n",fault_addr);
 
     for (;;){}
 }

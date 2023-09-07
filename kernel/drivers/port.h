@@ -1,6 +1,7 @@
-#pragma once
 #include "shared.h"
 
+#ifndef PORT_H_
+#define PORT_H_
 
 extern uint8_t port_byte_in(uint16_t port);
 extern void port_byte_out(uint16_t port,uint8_t data);
@@ -10,6 +11,7 @@ extern void port_word_out(uint16_t port,uint16_t data);
 
 extern void io_wait(void);
 
+#endif
 
 
 // #define PORT_IMPLEMENTAION_C

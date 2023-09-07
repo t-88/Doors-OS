@@ -1,8 +1,13 @@
-#pragma once
 #include "shared.h"
+#include "isr.h"
 
-extern void init_timer(u32 freq);
-extern void timer_print_tick();
+#ifndef TIMER_H_
+#define TIMER_H_
+
+void init_timer(u32 freq);
+void timer_print_tick();
+
+#endif
 
 // #define TIME_IMPLEMENTATION_C
 #ifdef TIME_IMPLEMENTATION_C
@@ -10,14 +15,9 @@ u32 tick = 0;
 
 
 void timer_print_tick() {
-    kprint("Tick: ",-1);
-    char str[256];
-    int_to_str(tick,str);
-    kprint(str,-1);
-    kprint("\n",-1);
+    printf("Tick: %d",tick);
 }
 static void timer_callback(Intrrupt_mdata regs) {
-    UN_USED(regs);
     tick++;
 }
 

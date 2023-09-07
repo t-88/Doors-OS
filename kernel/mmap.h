@@ -1,5 +1,8 @@
-#pragma once
 #include "shared.h"
+#include "print.h"
+
+#ifndef MMAP_H_
+#define MMAP_H_ 
 
 
 typedef struct MmapEntry_t {
@@ -26,11 +29,11 @@ void mmap_load_map();
 static  void mmap_compress_map();
 static const char* mmap_entry_type_to_str();
 
+#endif
 
 
 
-
-// #define MMAP_IMPLEMENTATION
+#define MMAP_IMPLEMENTATION
 #ifdef MMAP_IMPLEMENTATION
 void mmap_load_map() {
     u8* mmap_entry = MMAP_ENTRY;
@@ -44,7 +47,6 @@ void mmap_load_map() {
         mmap_entry += 8 + 8 + 4 + 4;
     }
 
-    // mmap_print_map();
     mmap_compress_map();
 }
 static void mmap_compress_map() {
@@ -58,7 +60,7 @@ static void mmap_compress_map() {
                 MmapEntry_t temp_entry = mmap_entries[j];
                 mmap_entries[j] = mmap_entries[j+1]; 
                 mmap_entries[j+1] = temp_entry; 
-                PRINTLN("?");
+                printf("\n");
             }
         }
     }
@@ -66,10 +68,11 @@ static void mmap_compress_map() {
 
 void mmap_print_map() {
     for (u8 i = 0; i < MMAP_ENTRIES_COUNT; i++) {
-        PRINT("baseAddress: ");PRINT_HEX(mmap_entries[i].baseAddress);
-        PRINT("    length     : ");PRINT_HEX(mmap_entries[i].length);
-        PRINT("    type       : ");PRINT(mmap_entry_type_to_str(mmap_entries[i].type));
-        PRINTLN();
+        printf("baseAddress: %x, length %x, type: %s\n",
+                            mmap_entries[i].baseAddress,
+                            mmap_entries[i].length,
+                            mmap_entry_type_to_str(mmap_entries[i].type)
+                        );
     }
 }
 
@@ -77,17 +80,17 @@ void mmap_print_map() {
 static const char* mmap_entry_type_to_str(u32 type) {
     switch (type)
     {
-    case EntryType_Available:
-        return "Available";
-    case EntryType_Reserved:
-        return "Reserved";
-    case EntryType_ACPI:
-        return "ACPI";
-    case EntryType_ACPI_NVS:
-        return "ACPI_NVS";
-    default:
-        return "Reserved";
-        break;
+        case EntryType_Available:
+            return "Available";
+        case EntryType_Reserved:
+            return "Reserved";
+        case EntryType_ACPI:
+            return "ACPI";
+        case EntryType_ACPI_NVS:
+            return "ACPI_NVS";
+        default:
+            return "Reserved";
+            return;
     }
 }
 

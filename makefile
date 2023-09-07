@@ -1,5 +1,8 @@
 INCLUDES = -Ikernel/drivers -Ikernel/memory -Icpu/ -Iklibc/ -Icpu/paging/
-CC = gcc -g -m32 -fno-pie  -ffreestanding -fno-stack-protector -Wall
+CC = gcc -g -m32 -fno-pie  -ffreestanding -fno-stack-protector
+# TODO: fix all warning
+#  -Wall
+
 LD = ld -m elf_i386
 KERNEL_ENTRY = 0x1600
 C_SOURCE = $(wildcard kernel/*.c kernel/drivers/*.c kernel/memory/*.c klibc/*.c cpu/*.c cpu/paging/*.c)

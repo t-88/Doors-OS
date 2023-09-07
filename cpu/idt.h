@@ -1,9 +1,9 @@
-#pragma once
 #include "shared.h"
 #include "types.h"
-#include "screen.h"
 
 
+#ifndef IDT_H_
+#define IDT_H_
 
 typedef struct idt_entry {
     u16 irs_base_low;
@@ -27,6 +27,8 @@ extern idt_ptr idtp;
 extern void idt_register_gate(int i, u32 handler);
 extern void idt_setup();
 
+
+#endif
 
 // #define IDT_IMPLEMENTATION_C
 #ifdef  IDT_IMPLEMENTATION_C
