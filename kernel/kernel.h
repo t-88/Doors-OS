@@ -45,5 +45,8 @@
 #define PORT_IMPLEMENTAION_C
 #include "port.h"
 
-#define SYS_STD_IMPLEMENTATION_C
-#include "sys_std.h"
+#define MATH_IMPLEMENTATION_C
+#include "math.h"
+
+#define STRING_IMPLEMENTATION_C
+#include "string.h"

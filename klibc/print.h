@@ -1,7 +1,7 @@
 #include <stdarg.h>
 
 #include "shared.h"
-#include "sys_std.h"
+#include "string.h"
 #include "screen.h"
 
 
@@ -42,6 +42,8 @@ void printf(const char* fmt,...) {
         _char = *fmt;
         fmt++;
         if(_char == '%') {
+            
+
             if(*fmt == 'c') { 
                 kprintc(va_arg(ap,char*));
             }

@@ -1,19 +1,19 @@
-#include "shared.h"
+#ifndef STRING_H_
+#define STRING_H_
 
-
-#ifndef SYS_STD_H
-#define SYS_STD_H
 
 void int_to_str(int number, char str[]);
 void hex_to_str(long long int number, char str[]);
 int strlen(char str[]);
 bool strcmp(char* str1,char* str2);
 
-u64 power(u64 a,u64 b);
 
-#endif
+#endif // STRING_H_
 
-#ifdef SYS_STD_IMPLEMENTATION_C
+#ifdef STRING_IMPLEMENTATION_C
+
+#include "types.h"
+
 void int_to_str(int number, char str[]) {
     if(number == 0 || number == -0) {
         str[0] = '0';
@@ -86,15 +86,6 @@ bool strcmp(char* str1,char* str2) {
     }
 
     return !str1[idx] && !str2[idx] && str1[idx] == str2[idx];
-}
-
-
-u64 power(u64 a,u64 b) {
-    u64 tmp = 1;
-    for (u64 i = 0; i < b; i++) {
-        tmp = a * tmp;
-    }
-    return tmp;    
 }
 
 
