@@ -83,11 +83,24 @@ void printf(const char* fmt,...) {
             int number = str_to_int(number_buffer);
             
 
+            if(*fmt == '*' && number_buffer_i == 0) {
+                int size = va_arg(ap,int);
+                for(u8 i = 0; i < size; i++) {
+                    printf(" ");
+                }
+                fmt++;
+            }
+
+
             if(*fmt == 'c') { 
                 kprintc(va_arg(ap,char*));
             }
             else if(*fmt == 's') {
-                kprints(va_arg(ap,char*));
+                if(number_buffer_i != 0) {
+                    kprints_sized(va_arg(ap,char*),number);
+                } else {
+                    kprints(va_arg(ap,char*));
+                }
             } 
             else if(*fmt == 'l') {
                 fmt++;

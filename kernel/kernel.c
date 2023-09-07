@@ -16,7 +16,6 @@ void kernel_init() {
     init_keyboard_driver();
 
 
-
     // paging_init();
 }
 
@@ -37,7 +36,6 @@ void vga_graphics() {
 void kernel_main() {
     kernel_init();
     clear_screen();
-
 
     terminal_add_cmd("mmap",mmap_print_map,0);
     terminal_add_cmd("vga",vga_graphics,0);

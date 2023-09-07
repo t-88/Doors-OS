@@ -28,7 +28,10 @@ and the most important goal is to learn and explore
 ![basic terminal overview](./dev-imgs/terminal_overview.gif)
 
 ### Kinda Funny
+#### Printing Inside Print :O
 ![calling_printf_inside_printf](./dev-imgs/calling_printf_inside_printf.png)
+#### Printing Os Memery
+![printing_os_mem](./dev-imgs/printing_os_memory.gif)
 
 ## Credits
 -   ctr-c ctr-v from [cfenollosa os dev](https://github.com/cfenollosa/os-tutorial/tree/master)

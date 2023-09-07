@@ -25,7 +25,7 @@ extern void kprint_char_at(char* chr,int attr,int x, int y);
 extern void kprint_str_at(char* str,char attr,int x, int y);
 extern void kprintc(char* str);
 extern void kprints(char* str);
-
+void kprints_sized(char* str,int size);
 #endif
 
 // #define SCREEN_IMPLEMENTATION_C
@@ -134,6 +134,15 @@ void kprint_str_at(char* str,char attr,int x, int y) {
 void kprintc(char* str) {
     kprint_char_at(str,-1,-1,-1);
 }
+void kprints_sized(char* str,int size) { 
+    while(size > 0) {
+        kprintc(*str);
+        str++;
+        size--;
+    }
+}
+
+
 void kprints(char* str) {
     kprint_str_at(str,-1,-1,-1);
 }
