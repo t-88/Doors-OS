@@ -27,6 +27,9 @@ and the most important goal is to learn and explore
 ![mmap](./dev-imgs/memory_map.png)
 ![basic terminal overview](./dev-imgs/terminal_overview.gif)
 
+### Kinda Funny
+![calling_printf_inside_printf](./dev-imgs/calling_printf_inside_printf.png)
+
 ## Credits
 -   ctr-c ctr-v from [cfenollosa os dev](https://github.com/cfenollosa/os-tutorial/tree/master)
 -   ofc [os-dev](https://wiki.osdev.org/Expanded_Main_Page) 

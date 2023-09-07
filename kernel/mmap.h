@@ -68,7 +68,7 @@ static void mmap_compress_map() {
 
 void mmap_print_map() {
     for (u8 i = 0; i < MMAP_ENTRIES_COUNT; i++) {
-        printf("baseAddress: %x, length %x, type: %s\n",
+        printf("baseAddress: %10lx, length %9lx, type: %s\n",
                             mmap_entries[i].baseAddress,
                             mmap_entries[i].length,
                             mmap_entry_type_to_str(mmap_entries[i].type)
