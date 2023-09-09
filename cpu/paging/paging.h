@@ -37,6 +37,8 @@ extern void page_dir_switch(PageDir* page_dir);
 extern Page* get_page(u32 addr,bool make,PageDir* page_dir);
 extern void page_fault(Intrrupt_mdata regs);
 extern void paging_enable(u32 addr);
+void frame_alloc(Page* page,bool is_kernel,bool is_writable);
+
 
 // Frame Code:
 extern u32* frames;

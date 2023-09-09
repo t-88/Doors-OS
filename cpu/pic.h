@@ -40,7 +40,8 @@ extern void PIC_remap(int offset1,int offset2);
 #endif
 
 // #define PIC_IMPLEMENTATION_C
-#ifdef PIC_IMPLEMENTATION_C
+#if defined(PIC_IMPLEMENTATION_C) || defined(PIC_STATIC_IMPLEMENTATION_C)
+
 void PIC_send_eoi(u8 irq) {
     if(irq >= PIC2_OFFSET)
         port_byte_out(PIC2_CMD,PIC_CMD_EOF);

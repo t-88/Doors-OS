@@ -29,7 +29,7 @@ void kprints_sized(char* str,int size);
 #endif
 
 // #define SCREEN_IMPLEMENTATION_C
-#ifdef SCREEN_IMPLEMENTATION_C
+#if defined(SCREEN_IMPLEMENTATION_C) || defined(SCREEN_STATIC_IMPLEMENTATION_C)
 
 uint8_t* video_mem;
 

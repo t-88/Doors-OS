@@ -31,7 +31,7 @@ extern void idt_setup();
 #endif
 
 // #define IDT_IMPLEMENTATION_C
-#ifdef  IDT_IMPLEMENTATION_C
+#if defined(IDT_IMPLEMENTATION_C) || defined(IDT_STATIC_IMPLEMENTATION_C)
 
 idt_entry idt[IDT_ENTRIES];
 idt_ptr idtp;

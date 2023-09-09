@@ -7,6 +7,7 @@
 #include "screen.h"
 
 
+
 #define PRINT_HEX(number) do {\
     char str[100];\
     hex_to_str(number,str);\
@@ -35,6 +36,8 @@ void printf(const char* fmt,...);
 
 #include "shared.h"
 #include "string.h"
+
+#define SCREEN_STATIC_IMPLEMENTATION_C
 #include "screen.h"
 
 #define PRINT_INT_TYPES(type) do{\
@@ -52,7 +55,7 @@ void printf(const char* fmt,...);
 
 #define PRINT_HEX_TYPES(type) do{\
     char buffer[256];\
-    int_to_hex_str(va_arg(ap,type),buffer); \
+    int_to_hex_str((type)va_arg(ap,type),buffer); \
     int len = strlen(buffer);\
     if(number > len) {\
         for (u8 i = 0; i < number - len; i++) {\
@@ -108,16 +111,16 @@ void printf(const char* fmt,...) {
                 if (_char == 'l') {
                     Unreachable("[printf error] Triple Long is not supported");
                 } else if (_char == 'd') {
-                    PRINT_INT_TYPES(long);
+                    PRINT_INT_TYPES(long long);
                 } else if (_char == 'x') {
-                    PRINT_HEX_TYPES(long long);
+                    PRINT_HEX_TYPES(u64);
                 }
             }
             else if (*fmt == 'd') {
-                PRINT_INT_TYPES(int);
+                PRINT_INT_TYPES(long);
             } 
             else if (*fmt == 'x') {
-                PRINT_HEX_TYPES(int);
+                PRINT_HEX_TYPES(u32);
             } 
             else if(_char == '%' ) {
                 kprintc(*fmt);
@@ -134,3 +137,5 @@ void printf(const char* fmt,...) {
 }
 
 #endif
+
+#undef SCREEN_STATIC_IMPLEMENTATION_C

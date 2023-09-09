@@ -1,12 +1,10 @@
-
-#include "shared.h"
-#include "pic.h"
-#include "print.h"
-
-#include "idt.h"
-
 #ifndef ISR_H_
 #define ISR_H_
+
+#include "shared.h"
+#include "print.h"
+#include "pic.h"
+#include "idt.h"
 
 
 /* ISRs reserved for CPU exceptions */
@@ -99,6 +97,14 @@ extern void irq_handler(Intrrupt_mdata r);
 
 // #define ISR_IMPLEMENTATION_C
 #ifdef ISR_IMPLEMENTATION_C
+#include "shared.h"
+#include "print.h"
+#define PIC_STATIC_IMPLEMENTATION_C
+#include "pic.h"
+#define IDT_STATIC_IMPLEMENTATION_C
+#include "idt.h"
+
+
 isr_t interrupt_handlers[256];
 
 void isr_init() {
@@ -173,4 +179,8 @@ void irq_handler(Intrrupt_mdata r) {
         handler(r);
     }
 }
+
+#undef IDT_STATIC_IMPLEMENTATION_C
+#undef PIC_STATIC_IMPLEMENTATION_C
 #endif
+

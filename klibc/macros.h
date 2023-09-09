@@ -18,5 +18,10 @@
 
 #define STOP for (;;){}
 
+#define ASSERT(cond) do {\
+    if(!(cond)) { printf("[assertion failed]" __FILE__ ); STOP; } \
+} while (0);
+
+
 
 #endif

@@ -10,9 +10,9 @@ extern u32 free_mem_addr;
 
 
 
-extern void kmemcpy(uint8_t * source, uint8_t * dest,int n_bytes);
-extern u32 kmalloc(u32 size,bool aligned,u32* phy);
-extern void memset(u32 *addr, u32 value, u32 nbytes);
+void kmemcpy(uint8_t * source, uint8_t * dest,int n_bytes);
+u32 kmalloc(u64 size,bool aligned, u32* phy);
+void memset(u32 *addr, u32 value, u32 nbytes);
 
 
 #endif
@@ -30,7 +30,7 @@ void kmemcpy(u8 * source, u8 * dest,int n_bytes) {
     }
 }
 
-u32 kmalloc(u32 size,bool aligned, u32* phy) {
+u32 kmalloc(u64 size,bool aligned, u32* phy) {
     if(aligned == 1 && (free_mem_addr & 0x00000FFF)) {
         free_mem_addr &= 0xFFFFF000;
         free_mem_addr += 0x1000;

@@ -1,5 +1,8 @@
 //TODO: Add Static implemtation aka #undef
 
+#define HEAP_IMPLEMENTATION_C
+#include "heap.h"
+
 //TODO: restart pagging
 #define PAGING_IMPLEMENTATION_C
 #include "paging.h"
@@ -30,12 +33,14 @@
 #include "keyboard.h"
 
 
-#define PIC_IMPLEMENTATION_C
-#define IDT_IMPLEMENTATION_C
 #define ISR_IMPLEMENTATION_C
 #include "isr.h"
 
-#define SCREEN_IMPLEMENTATION_C
+// #define ORDERED_LIST_IMPLEMENTATION_C
+// #include "ordered_list.h"
+
+
+
 #define PRINT_IMPLEMENTATION_C
 #include "print.h"
 
