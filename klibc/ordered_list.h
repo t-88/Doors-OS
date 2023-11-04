@@ -29,8 +29,8 @@ void ol_remove(OrderedList_t* ol,u32 i);
 
 OrderedList_t ol_create(u32 size, ol_lessthan callback) {
     OrderedList_t list;
-    list.array = kmalloc(size * sizeof(type_t),0,0);
-    memset(list.array,0,size * sizeof(type_t));
+    list.array = (type_t*) kmalloc(size * sizeof(type_t),0,0);
+    memset(*list.array,0,size * sizeof(type_t));
     list.length = 0;
     list.size = size;
     list.less_than = callback;
@@ -39,10 +39,10 @@ OrderedList_t ol_create(u32 size, ol_lessthan callback) {
 OrderedList_t ol_create_at(void* addr, u32 size, ol_lessthan* callback)  {
     OrderedList_t list;
     list.array =  (type_t*) addr; // make sure u dont override it
-    // memset(list.array,0,size * sizeof(type_t));
     list.length = 0;
     list.size = size;
-    list.less_than = callback;
+    //TODO: re-read this and re-understand it
+    list.less_than = *callback;
     return list;    
 }
 

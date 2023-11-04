@@ -62,8 +62,8 @@ mmap_entry:
         je .done
 
         push ebx 
-        mov bx , bp
-        call print_hex
+        ; mov bx , bp
+        ; call print_hex
         pop ebx
 
         jmp .next_entry
@@ -73,8 +73,8 @@ mmap_entry:
         mov bx, STR_MMAP_DONE
         call print
 
-        mov bx, bp
-        call print_hex
+        ; mov bx, bp
+        ; call print_hex
 
 
 

@@ -162,10 +162,13 @@ void isr_init() {
     idt_setup(); // Load with ASM
 }
 
+
 extern void page_fault(Intrrupt_mdata regs);
+
 void isr_handler(Intrrupt_mdata r) {
     printf("received interrupt: %d\n",r.int_no);
-    if(r.int_no == 14) { page_fault(r); }
+    if(r.int_no == 14) page_fault(r);
+    STOP;
 }
 
 inline void irq_register_handler(u8 n, isr_t handler) {

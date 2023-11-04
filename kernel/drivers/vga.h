@@ -41,7 +41,6 @@ static void gfx_draw_pixel_320x200x256(u32 x,u32 y,u8 c);
 
 
 
-
 // Graphics Variables
 DisplayMode curr_mode;
 u32 gfx_width;
@@ -76,7 +75,7 @@ const u8 vga_mode_13[] = {
 
 void vga_init() {
     frame_buffer = (u32*) 0xA0000;
-    mem = (u64*) kmalloc(4 * 200 * 80,0,0);
+    mem = (u64*) kmalloc(sizeof(u64) * 200 * 80,0,0);
 }
 void vga_load_mode(DisplayMode mode) {
     curr_mode = mode;
@@ -151,11 +150,6 @@ void gfx_swap_buffers_320x200x256() {
 static void gfx_clear_screen_320x200x256(u8 c) {
     u64 color = c;
     color =  color | (color << 8) | (color << 16) | (color << 24);
-        
-    // for (u8 i = 0; i < 4; i++) {
-        // color |= c << (i * 8);
-    // }
-    
     for (u32 i = 0; i < 80 * 200; i++) {
         mem[i] =  color;
     }

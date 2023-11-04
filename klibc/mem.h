@@ -34,14 +34,11 @@ u32 kmalloc(u64 size,bool aligned, u32* phy) {
     if(aligned == 1 && (free_mem_addr & 0x00000FFF)) {
         free_mem_addr &= 0xFFFFF000;
         free_mem_addr += 0x1000;
-
     }
 
-    
-
-    if(phy) {
+    if(phy)
         *phy = free_mem_addr;
-    }
+
 
     u32 addr = free_mem_addr;
     free_mem_addr += size; 

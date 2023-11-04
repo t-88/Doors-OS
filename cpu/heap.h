@@ -111,7 +111,7 @@ Heap_t* heap_create(u32 start,u32 end,u32 max) {
     // u32 old_size = heap->end_addr - heap->start_addr;
 // 
     // while (old_size < size) {
-        // frame_alloc(get_page(heap->start_addr + old_size,kernel_dir))
+        // frame_alloc(page_get(heap->start_addr + old_size,kernel_dir))
     // }
 // }
 
@@ -132,7 +132,7 @@ Heap_t* heap_create(u32 start,u32 end,u32 max) {
 //    u32int i = old_size - 0x1000;
 //    while (new_size < i)
 //    {
-    //    free_frame(get_page(heap->start_address+i, 0, kernel_directory));
+    //    free_frame(page_get(heap->start_address+i, 0, kernel_directory));
     //    i -= 0x1000;
 //    }
 //    heap->end_address = heap->start_address + new_size;
@@ -184,7 +184,7 @@ void* heap_alloc(Heap_t* heap,u32 size) {
 }
 
 void* heap_free(Heap_t* heap,void* pointer) { 
-    if(pointer == 0) return;
+    if(pointer == 0) return 0;
 
     Header_t* header = (Header_t*) (pointer - sizeof(Header_t));
     Footer_t* footer = (Footer_t*) (((u32)header) + header->size - sizeof(Footer_t));
@@ -227,6 +227,8 @@ void* heap_free(Heap_t* heap,void* pointer) {
     if(!did_unify) {
         ol_insert(&heap->idx_list,header);
     }
+
+    return 0;
 }
 
 #undef ORDERED_LIST_STATIC_IMPLEMENTATION_C
