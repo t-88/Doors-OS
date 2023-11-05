@@ -85,7 +85,7 @@ typedef struct Intrrupt_mdata {
    u32 eip, cs, eflags, useresp, ss; /* Pushed by the processor automatically */
 } __attribute__((packed)) Intrrupt_mdata;
 
-extern void isr_init();
+extern void init_isr();
 extern void isr_handler(Intrrupt_mdata r);
 
 typedef void (*isr_t)(Intrrupt_mdata);
@@ -107,7 +107,7 @@ extern void irq_handler(Intrrupt_mdata r);
 
 isr_t interrupt_handlers[256];
 
-void isr_init() {
+void init_isr() {
     idt_register_gate(0,  (u32)isr0);
     idt_register_gate(1,  (u32)isr1);
     idt_register_gate(2,  (u32)isr2);

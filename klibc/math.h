@@ -3,6 +3,8 @@
 
 #include "types.h"
 u64 power(u64 a,u64 b);
+int max_i(int a , int b);
+int min_i(int a , int b);
 
 #endif
 
@@ -15,4 +17,12 @@ u64 power(u64 a,u64 b) {
     }
     return tmp;    
 }
+
+int max_i(int a , int b) {
+    return a > b ? a : b; 
+}
+int min_i(int a , int b) {
+    return a > b ? b : a; 
+}
+
 #endif

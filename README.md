@@ -5,11 +5,11 @@ i dont want it to be a fad, so it will take as long as it needs to take
 
 ## Goals
 after reading the [beginner mistakes](https://wiki.osdev.org/Beginner_Mistakes) and testing a bit in my [leanring repo](https://github.com/t-88/Code-Bongo-III/tree/main/os-dev), i knew i needed a end goal and i should do it the right way   
--   getting keyboad input [Done]
--   mouse Input [Done]
--   VGA driver [Done]
--   building a repl (read excute print loop) [Done]
--   making some game 
+- [x] getting keyboad input 
+- [x] mouse Input 
+- [x] VGA driver 
+- [x] building a repl (read excute print loop) 
+- [ ] making some game 
 and the most important goal is to learn and explore     
 
 ## How To Run
@@ -24,8 +24,12 @@ and the most important goal is to learn and explore
 
 
 ## Dev Imgs
+### Memory Maping
 ![mmap](./dev-imgs/memory_map.png)
+### Terminal Achived
 ![basic terminal overview](./dev-imgs/terminal_overview.gif)
+#### Mouse Driver
+![mouse_driver](./dev-imgs/mouse_driver.gif)
 
 ### Kinda Funny
 #### Printing Inside Print :O

@@ -10,13 +10,13 @@ typedef struct PageTable {
 } PageTable;
 
 typedef struct PageDir {
-    PageTable* tables[1024];
+    u32 tables[1024];
 } PageDir;
 
 
 
-void paging_enable(u32 addr);
-void paging_init_identity_map();
+void paging_enable(PageDir* page_dir_addr);
+void init_identity_paging_map();
 void page_fault(Intrrupt_mdata regs);
 
 extern PageDir* page_dir;
@@ -31,7 +31,7 @@ extern PageDir* page_dir;
 
 PageDir* page_dir;
 
-void paging_init_identity_map() {
+void init_identity_paging_map() {
     page_dir = (PageDir*) kmalloc(sizeof(PageDir),1,0);
 
     u64 addr = 0;
@@ -49,7 +49,7 @@ void paging_init_identity_map() {
 }
 
 
-void paging_enable(u32 page_dir_addr) {
+void paging_enable(PageDir* page_dir_addr) {
     // uses the addr of the first table
     asm volatile("mov %0, %%cr3":: "r"(page_dir_addr));
     u32 cr0;

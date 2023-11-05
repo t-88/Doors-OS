@@ -6,6 +6,7 @@
 
 
 #define sti() asm volatile("sti");
+#define cli() asm volatile("cli");
 
 #define Unreachable(msg) do { \
     printf("[Unreachable] %s "__FILE__"\n",(msg)); STOP;\

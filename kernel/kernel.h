@@ -17,7 +17,7 @@
 
 //TODO: restart mouse
 // #define MOUSE_IMPLEMENTATION_C 
-// #include "mouse.h"
+#include "mouse.h"
 
 #define TERMINAL_IMPLEMENETAION_C
 #include "terminal.h"

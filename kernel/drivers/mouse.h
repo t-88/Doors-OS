@@ -16,16 +16,23 @@ extern int dir_y;
 extern int mouse_x_delta;
 extern int mouse_y_delta;
 
-extern float mouse_x;
-extern float mouse_y;
+extern int mouse_x;
+extern int mouse_y;
 
 extern void mouse_init_driver();
+extern void mouse_init_sequence();
+
 extern void mouse_print_debug();
 
+#endif
 
 
 #define MOUSE_IMPLEMENTATION_C
 #ifdef MOUSE_IMPLEMENTATION_C
+
+#include "macros.h"
+#include "math.h"
+#include "vga.h"
 
 bool mouse_down = false;
 bool mouse_left = false;
@@ -37,137 +44,126 @@ int dir_y = 0;
 int mouse_x_delta = 0;
 int mouse_y_delta = 0;
 
-float mouse_x;
-float mouse_y;
+int mouse_x;
+int mouse_y;
 
-extern u32 screen_width;
-extern u32 screen_height;
+extern u32 gfx_width , gfx_height;
+int mouse_cycle = 0;
+u8 mouse_packet[3];
+ 
 
-#endif
+const u8 mouse_icon[] = {
+    1,1,1,1,1,0, 
+    1,1,1,1,0,0, 
+    1,1,1,1,0,0,
+    1,1,1,1,1,0,
+    1,0,0,1,1,1,
+    0,0,0,0,1,1,
+};  
 
-void mouse_print_debug() {
-    if(!mouse_x_delta && !mouse_y_delta) { return; }
+#define MOUSE_ICON_COLOR 5
 
-    printf("mouse:\n");
-    printf("    x: %d\n",mouse_x);
-    printf("    y: %d\n",mouse_y);
 
-    if(mouse_x_delta) {
-        printf("     delta x: %d \n",mouse_x_delta); 
-        printf("     dir x:   %d \n",dir_x);         
-    }
-    if(mouse_y_delta) {
-        printf("     delta y: %d \n",mouse_y_delta); 
-        printf("     dir y:   %d \n",dir_y);         
+void mouse_draw_cursor() {
+    for (u32 y = 0; y < 6; y++) {
+        for (u32 x = 0; x < 6; x++) {
+            if(mouse_icon[x + y *   6]) {
+                gfx_draw_pixel(mouse_x + x,mouse_y + y,MOUSE_ICON_COLOR);
+            }
+        }
     }
 }
 
 static void mouse_callback(Intrrupt_mdata reg) {
+    // save packet in packet list
+    mouse_packet[mouse_cycle] = port_byte_in(0x60);
+
+    // skip overflow packet
+    if(mouse_cycle == 0) {
+        bool x_o  = (mouse_packet[0] >> 6) & 0x1;  
+        bool y_o  = (mouse_packet[0] >> 7) & 0x1;
+
+        // if overflow
+        if(x_o || y_o) return;
+    } 
     
-//     // y-overflow|x-overflow|y-sign|x-sign|1|m-btn|r-btn|l-btn
-//     u8 packet1 =  port_byte_in(0x60);
-//     io_wait();
+    // collect next packet
+    mouse_cycle += 1;
 
-//     mouse_left   = packet1 & 0x1; packet1 >>= 1;
-//     mouse_right  = packet1 & 0x1; packet1 >>= 1;
-//     mouse_middle = packet1 & 0x1; packet1 >>= 1;
+    if(mouse_cycle == 3) {
+        bool l_btn = (mouse_packet[0] >> 0) & 0x1;
+        bool r_btn = (mouse_packet[0] >> 1) & 0x1;
+        bool m_btn = (mouse_packet[0] >> 2) & 0x1;
 
-//     mouse_down = mouse_left  || mouse_right || mouse_middle; 
+        bool x_sign = (mouse_packet[0] >> 4) & 0x1;
+        bool y_sign = (mouse_packet[0] >> 5) & 0x1;
 
+        int rel_x = mouse_packet[1];
+        int rel_y = mouse_packet[2];
 
-//     packet1 >>= 1;
-//     dir_x = (packet1 & 0x1) ? -1 : 1; packet1 >>= 1;
-//     dir_y = (packet1 & 0x1) ? 1 : -1; packet1 >>= 1;
-    
-//     io_wait();
+        if(x_sign) rel_x |= 0xFFFFFF00;
+        if(y_sign) rel_y |= 0xFFFFFF00;
 
-//     mouse_x_delta =  port_byte_in(0x60) | (dir_x == -1 ? 0xFFFFFF00 : 0);
-//     if(packet1 & 0x1) {
-//         mouse_x_delta = 0;
-//     }
-//     io_wait();
-    
-//     mouse_y_delta =  port_byte_in(0x60);
-//     if(dir_y == -1) {
-//         mouse_y_delta = -mouse_y_delta;
-//     } else {
-//         mouse_y_delta = -(mouse_y_delta | 0xFFFFFF00);
-//     }
-//     packet1 >>= 1;
-//     if(packet1 & 0x1) {
-//         mouse_y_delta = 0;
-//     }
+        // boundy checks
+        mouse_x = max_i(0,min_i(mouse_x + rel_x,gfx_width));
+        mouse_y = max_i(0,min_i(mouse_y - rel_y,gfx_height));
+    }
 
-//     if(!mouse_x_delta && !mouse_x_delta) {
-//         return;   
-    // }
+    mouse_cycle = mouse_cycle % 3;
 
-
-//     mouse_x += mouse_x_delta;
-//     mouse_y += mouse_y_delta;
-
-
-//     if(mouse_x  < 0) {
-//         mouse_x = 0;
-//     } else if (mouse_x   > screen_width) {
-//         mouse_x = screen_width - 1;
-//     }
-//     if(mouse_y  < 0) {
-//         mouse_y = 0;
-//     } else if (mouse_y > screen_height) {
-//         mouse_y = screen_height - 1;
-//     }
-
-
-    
-//     mouse_print_debug();
+   
 }
+void mouse_init_sequence() {
+    cli();
 
+    port_byte_out(0x64, 0xA8);
+    port_byte_out(0x64,0x20);
+
+    u32 val = port_byte_in(0x60);
+    val |= 2;
+    port_byte_out(0x64,0x60);
+    port_byte_out(0x60,val);
+    
+    mouse_write(0xF6);
+    port_byte_in(0x60);
+
+    mouse_write(0xF4);
+    port_byte_in(0x60);
+
+
+    sti();
+}
+void mouse_write(u8 a_write) {
+  port_byte_out(0x64, 0xD4);
+  port_byte_out(0x60, a_write);
+}
 void init_mouse_driver() {
+    mouse_init_sequence();
+
     mouse_down = false;
     mouse_left = false;
     mouse_right = false;
     mouse_middle = false;
-
 
     dir_x = 0;
     dir_y = 0;
     mouse_x_delta = 0;
     mouse_y_delta = 0;
 
-    // mouse_x = screen_width / 2;
-    // mouse_y = screen_height / 2;
+    mouse_x = gfx_width / 2;
+    mouse_y = gfx_height / 2;
+
+    mouse_cycle = 0;
+    for (int i = 0; i < 3; i++) {
+        mouse_packet[i] = 0;
+    }
+    
 
     irq_register_handler(IRQ12,mouse_callback);
 }
 
 
 
-
-
-// TODO NOW:
-// void mouse_init() {
-    // port_byte_out(0x64, 0xA8);
-    // port_byte_out(0x64,0x20);
-    // u32 val = port_byte_in(0x60);
-    // val |= 2;
-    // val &= ~(1 << 5);
-    // port_byte_out(0x64,0x60);
-    // port_byte_out(0x60,val);
-    // 
-    // mouse_write(0xF6);
-    // port_byte_in(0x60);
-    // 
-    // mouse_write(0xF4);
-    // port_byte_in(0x60);
-    // init_mouse_driver();
-// }
-
-// void mouse_write(u8 a_write) //unsigned char
-// {
-//   port_byte_out(0x64, 0xD4);
-//   port_byte_out(0x60, a_write);
-// }
 
 
 #endif

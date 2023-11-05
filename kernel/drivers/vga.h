@@ -22,7 +22,9 @@ static u32* frame_buffer;
 
 u64* mem;
 
-void vga_init();
+u32 gfx_width , gfx_height;
+
+void init_vga();
 void vga_load_mode(DisplayMode mode);
 static void vga_load_mode_general(u8* regs);
 
@@ -34,6 +36,8 @@ static void vga_load_mode_general(u8* regs);
 static void gfx_swap_buffers_320x200x256();
 static void gfx_clear_screen_320x200x256(u8 c);
 static void gfx_draw_rect_320x200x256(u32 x,u32 y,u32 w, u32 h,u8 c);
+static void gfx_draw_rect_outline_320x200x256(u32 x,u32 y,u32 w, u32 h,u8 c);
+
 static void gfx_draw_pixel_320x200x256(u32 x,u32 y,u8 c);
 
 
@@ -52,12 +56,17 @@ void (*gfx_clear_screen)(u8 c);
 void (*gfx_swap_buffers)();
 void (*gfx_draw_pixel)(u32 x,u32 y,u8 c);
 void (*gfx_draw_rect)(u32 x,u32 y,u32 w, u32 h,u8 c);
+void (*gfx_draw_rect_outline)(u32 x,u32 y,u32 w, u32 h,u8 c);
 
 
 #endif
 
 // #define VGA_IMPLEMENTATION
 #ifdef VGA_IMPLEMENTATION
+
+u32 screen_width ,screen_height;
+
+
 const u8 vga_mode_13[] = {
     // general regs
     0x63,
@@ -73,7 +82,7 @@ const u8 vga_mode_13[] = {
 };
 
 
-void vga_init() {
+void init_vga() {
     frame_buffer = (u32*) 0xA0000;
     mem = (u64*) kmalloc(sizeof(u64) * 200 * 80,0,0);
 }
@@ -87,6 +96,8 @@ void vga_load_mode(DisplayMode mode) {
             gfx_swap_buffers = gfx_swap_buffers_320x200x256;
             gfx_draw_pixel = gfx_draw_pixel_320x200x256;
             gfx_draw_rect = gfx_draw_rect_320x200x256;
+            gfx_draw_rect_outline = gfx_draw_rect_outline_320x200x256;
+            
 
             vga_load_mode_general((u8*) vga_mode_13);
         break;
@@ -173,4 +184,23 @@ static void gfx_draw_rect_320x200x256(u32 x,u32 y,u32 w, u32 h,u8 c) {
         }
     }
 }
+
+static void gfx_draw_rect_outline_320x200x256(u32 x,u32 y,u32 w, u32 h,u8 c) {
+    for (u32 j = y; j < h + y; j++) {
+        gfx_draw_pixel_320x200x256(x, j,c);
+    }
+    for (u32 j = y; j < h + y; j++) {
+        gfx_draw_pixel_320x200x256(x +  w, j,c);
+    }
+    for (u32 i = x; i < w + x; i++) {
+        gfx_draw_pixel_320x200x256(i, y,c);
+    }
+
+    for (u32 i = x; i < w + x; i++) {
+        gfx_draw_pixel_320x200x256(i, y + h,c);
+    }
+
+}
+
+
 #endif

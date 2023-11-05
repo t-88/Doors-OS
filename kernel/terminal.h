@@ -24,7 +24,7 @@ static u32 commands_count;
 static TerminalCmd cmds[MAX_COMMANDS_COUNT];
 
 
-void terminal_init();
+void init_terminal();
 void terminal_run();
 static void terminal_handle_single_char(const char chr);
 static void terminal_parse_cmd();
@@ -39,7 +39,7 @@ void terminal_cmd_help();
 
 // #define TERMINAL_IMPLEMENETAION_C 
 #ifdef TERMINAL_IMPLEMENETAION_C
-void terminal_init() {
+void init_terminal() {
     recved_cmd = true;
     char_count =  2;
     commands_count = 0;

@@ -68,7 +68,7 @@ typedef enum Keyboard_Key {
 
 static bool keyboard_wait_char_down; 
 static bool keyboard_wait_char_up; 
-static char last_char;
+char last_char;
 
 
 #define KEYBOARD_CHAR_BUFFER_MAX 20

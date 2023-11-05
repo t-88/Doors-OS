@@ -1,48 +1,62 @@
 #include "kernel.h"
 
 
+void draw_graphics();
 
 void kernel_init() {
     free_mem_addr = 0x100000;
 
-    init_screen_driver();
-    isr_init();
+
+    init_isr();
+    init_identity_paging_map();
+    init_terminal();
+    init_vga();
+
     mmap_load_map();
-    terminal_init();
-    vga_init();
 
     sti();
     init_timer(1);
+    init_screen_driver();
     init_keyboard_driver();
-    
-    // paging_init();
+    init_mouse_driver();
 }
 
 
-void vga_graphics() {
-    vga_load_mode(DisplayMode_320x200x256);
-    gfx_clear_screen(1);
 
-    u8 row_lenght = 20;
-    for (u8 i = 0; i < 64; i++) {
-        gfx_draw_rect((i % row_lenght) * 10, (i / row_lenght) * 10,10,10,i);
-    }
-    
-    gfx_swap_buffers();
-}
 
 
 void kernel_main() {
     kernel_init();
     clear_screen();
 
-    paging_init_identity_map();
-    keybaord_wait_char('\n');
+
+    gfx_width = 320;
+    gfx_height = 200;
+
 
     terminal_add_cmd("mmap",mmap_print_map,0);
-    terminal_add_cmd("vga",vga_graphics,0);
+    terminal_add_cmd("vga",draw_graphics,0);
     terminal_run();
+
 
     STOP;
 }
 
+void init_graphics() {
+    vga_load_mode(DisplayMode_320x200x256);
+}
+void update_graphics() {
+    while (last_char != keyboard_char_to_scanecode(' ')) {
+        gfx_clear_screen(0);
+
+        mouse_draw_cursor();
+        gfx_draw_rect_outline(0,0,gfx_width - 1,gfx_height - 1,1);
+
+
+        gfx_swap_buffers();
+    }
+}
+void draw_graphics() {
+    init_graphics();
+    update_graphics();
+}
