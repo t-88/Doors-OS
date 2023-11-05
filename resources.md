@@ -11,12 +11,14 @@
 
 # Drivers
 - [Mouse Connector](http://ohlandl.ipv7.net/parts/mouse.html#SBP-Mice)
+- [os dev ready mouse driver](https://forum.osdev.org/viewtopic.php?f=1&t=10247)
 
 # Memory
 - [Memory Paging](http://www.osdever.net/tutorials/view/implementing-basic-paging)
 - [Devs](https://dev.to/frosnerd/writing-my-own-dynamic-memory-management-361g)
 - [Jomes Molly heap](http://www.jamesmolloy.co.uk/tutorial_html/7.-The%20Heap.html)
 - https://www.youtube.com/@nanobyte-dev/videos
+- [full explanation of pagging](https://stackoverflow.com/questions/67033820/what-is-paging-exactly-osdev)
 
 # Graphics
 - [Lines Mode13h](https://atrevida.comprenica.com/atrtut08.html)

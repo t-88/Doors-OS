@@ -3,6 +3,7 @@
 #include "isr.h"
 
 
+//TODO: when go full screen mouse stops
 #ifndef MOUSE_H_
 #define MOUSE_H_
 
