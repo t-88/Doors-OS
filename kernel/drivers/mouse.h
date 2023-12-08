@@ -92,22 +92,21 @@ static void mouse_callback(Intrrupt_mdata reg) {
     mouse_cycle += 1;
 
     if(mouse_cycle == 3) {
-        bool l_btn = (mouse_packet[0] >> 0) & 0x1;
-        bool r_btn = (mouse_packet[0] >> 1) & 0x1;
-        bool m_btn = (mouse_packet[0] >> 2) & 0x1;
+        mouse_left = (mouse_packet[0] >> 0) & 0x1;
+        mouse_right = (mouse_packet[0] >> 1) & 0x1;
+        mouse_middle = (mouse_packet[0] >> 2) & 0x1;
 
         bool x_sign = (mouse_packet[0] >> 4) & 0x1;
         bool y_sign = (mouse_packet[0] >> 5) & 0x1;
 
-        int rel_x = mouse_packet[1];
-        int rel_y = mouse_packet[2];
+        mouse_x_delta = mouse_packet[1];
+        mouse_y_delta = mouse_packet[2];
 
-        if(x_sign) rel_x |= 0xFFFFFF00;
-        if(y_sign) rel_y |= 0xFFFFFF00;
+        if(x_sign) mouse_x_delta |= 0xFFFFFF00;
+        if(y_sign) mouse_y_delta |= 0xFFFFFF00;
 
-        // boundy checks
-        mouse_x = max_i(0,min_i(mouse_x + rel_x,gfx_width));
-        mouse_y = max_i(0,min_i(mouse_y - rel_y,gfx_height));
+        mouse_x = max_i(0,min_i(mouse_x + mouse_x_delta,gfx_width));
+        mouse_y = max_i(0,min_i(mouse_y - mouse_y_delta,gfx_height));
     }
 
     mouse_cycle = mouse_cycle % 3;
