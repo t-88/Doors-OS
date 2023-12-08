@@ -35,10 +35,11 @@ static void vga_load_mode_general(u8* regs);
 // Linear FrameBuffer
 static void gfx_swap_buffers_320x200x256();
 static void gfx_clear_screen_320x200x256(u8 c);
-static void gfx_draw_rect_320x200x256(u32 x,u32 y,u32 w, u32 h,u8 c);
-static void gfx_draw_rect_outline_320x200x256(u32 x,u32 y,u32 w, u32 h,u8 c);
 
-static void gfx_draw_pixel_320x200x256(u32 x,u32 y,u8 c);
+static void gfx_draw_rect_320x200x256(int x,int y,int w, int h,u8 c);
+static void gfx_draw_rect_outline_320x200x256(int x,int y,int w, int h,u8 c);
+
+static void gfx_draw_pixel_320x200x256(int x,int y,u8 c);
 
 
 
@@ -165,8 +166,8 @@ static void gfx_clear_screen_320x200x256(u8 c) {
         mem[i] =  color;
     }
 }
-static void gfx_draw_pixel_320x200x256(u32 x,u32 y,u8 c) {
-    if(x >= gfx_width || y >= gfx_height) {
+static void gfx_draw_pixel_320x200x256(int x,int y,u8 c) {
+    if(x >= gfx_width || y >= gfx_height || x < 0 || y < 0) {
         return;
     }
 
@@ -177,15 +178,15 @@ static void gfx_draw_pixel_320x200x256(u32 x,u32 y,u8 c) {
     mem[y * 80 + x] &= ~(0x00000000FF << offset);
     mem[y * 80 + x] |= color;
 }
-static void gfx_draw_rect_320x200x256(u32 x,u32 y,u32 w, u32 h,u8 c) {
-    for (u32 j = y; j < h + y; j++) {
-        for (u32 i = x; i < w + x; i++) {
+static void gfx_draw_rect_320x200x256(int x,int y,int w, int h,u8 c) {
+    for (int j = y; j < h + y; j++) {
+        for (int i = x; i < w + x; i++) {
             gfx_draw_pixel_320x200x256(i, j,c);
         }
     }
 }
 
-static void gfx_draw_rect_outline_320x200x256(u32 x,u32 y,u32 w, u32 h,u8 c) {
+static void gfx_draw_rect_outline_320x200x256(int x,int y,int w, int h,u8 c) {
     for (u32 j = y; j < h + y; j++) {
         gfx_draw_pixel_320x200x256(x, j,c);
     }

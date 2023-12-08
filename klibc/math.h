@@ -5,6 +5,7 @@
 u64 power(u64 a,u64 b);
 int max_i(int a , int b);
 int min_i(int a , int b);
+bool AABB(int x1,int y1,int  w1,int  h1,int  x2,int  y2,int  w2,int  h2);
 
 #endif
 
@@ -23,6 +24,11 @@ int max_i(int a , int b) {
 }
 int min_i(int a , int b) {
     return a > b ? b : a; 
+}
+
+
+bool AABB(int x1,int y1,int  w1,int  h1,int  x2,int  y2,int  w2,int  h2) {
+    return x1 + w1 > x2 && y1 + h1 > y2 && x2 + w2 > x1 && y2 + h2 > y1; 
 }
 
 #endif
