@@ -1,5 +1,5 @@
 # Doors OS
-Hobbies OS am devloping from scratch to understand low lvl programming and sys dev       
+Hobbiest OS am devloping from scratch to understand low lvl programming and sys dev       
 it will take as long as it needs to take
 
 ## How To Run
