@@ -1,6 +1,7 @@
 
 #include "shared.h"
 #include "port.h"
+#include "../font.h"
 
 #ifndef VGA_H_
 #define VGA_H_
@@ -35,15 +36,31 @@ static void vga_load_mode_general(u8* regs);
 // Linear FrameBuffer
 static void gfx_swap_buffers_320x200x256();
 static void gfx_clear_screen_320x200x256(u8 c);
-
 static void gfx_draw_rect_320x200x256(int x,int y,int w, int h,u8 c);
 static void gfx_draw_rect_outline_320x200x256(int x,int y,int w, int h,u8 c);
-
 static void gfx_draw_pixel_320x200x256(int x,int y,u8 c);
+static void gfx_draw_char_320x200x256(int x, int y ,char chr,u8 color);
+static void gfx_draw_text_320x200x256(int x, int y, char* text, int count, u8 color);
 
 
 
-
+// colors
+#define COLOR_BLACK 0
+#define COLOR_BLUE 1
+#define COLOR_GREEN 2
+#define COLOR_CYAN 3
+#define COLOR_RED 4
+#define COLOR_MAGENTA 5
+#define COLOR_BROWN 6
+#define COLOR_LIGHT_GREY 7
+#define COLOR_DARK_GREY 8
+#define COLOR_LIGHT_BLUE 9
+#define COLOR_LIGHT_GREEN 10
+#define COLOR_LIGHT_CYAN 11
+#define COLOR_LIGHT_RERD 12
+#define COLOR_LIGHT_MAGENTA 13
+#define COLOR_YELLOW 14
+#define COLOR_WHITE 15
 
 
 // Graphics Variables
@@ -58,6 +75,8 @@ void (*gfx_swap_buffers)();
 void (*gfx_draw_pixel)(u32 x,u32 y,u8 c);
 void (*gfx_draw_rect)(u32 x,u32 y,u32 w, u32 h,u8 c);
 void (*gfx_draw_rect_outline)(u32 x,u32 y,u32 w, u32 h,u8 c);
+void (*gfx_draw_char)(int x, int y ,char chr,u8 color);
+void (*gfx_draw_text)(int x, int y, char* text, int count, u8 color);
 
 
 #endif
@@ -92,12 +111,15 @@ void vga_load_mode(DisplayMode mode) {
     switch (mode)
     {
         case DisplayMode_320x200x256:
-            gfx_width = 320; gfx_height = 200;
+            gfx_width = 320; 
+            gfx_height = 200;
             gfx_clear_screen = gfx_clear_screen_320x200x256;
             gfx_swap_buffers = gfx_swap_buffers_320x200x256;
             gfx_draw_pixel = gfx_draw_pixel_320x200x256;
             gfx_draw_rect = gfx_draw_rect_320x200x256;
             gfx_draw_rect_outline = gfx_draw_rect_outline_320x200x256;
+            gfx_draw_char = gfx_draw_char_320x200x256;
+            gfx_draw_text = gfx_draw_text_320x200x256;
             
 
             vga_load_mode_general((u8*) vga_mode_13);
@@ -107,7 +129,6 @@ void vga_load_mode(DisplayMode mode) {
         break;
     }
 }
-
 static void vga_load_mode_general(u8* regs) {
     port_byte_out(0x3C2,*regs);
     regs++;
@@ -157,8 +178,6 @@ void gfx_swap_buffers_320x200x256() {
         }
     }
 }    
-
-
 static void gfx_clear_screen_320x200x256(u8 c) {
     u64 color = c;
     color =  color | (color << 8) | (color << 16) | (color << 24);
@@ -185,7 +204,6 @@ static void gfx_draw_rect_320x200x256(int x,int y,int w, int h,u8 c) {
         }
     }
 }
-
 static void gfx_draw_rect_outline_320x200x256(int x,int y,int w, int h,u8 c) {
     for (u32 j = y; j < h + y; j++) {
         gfx_draw_pixel_320x200x256(x, j,c);
@@ -202,6 +220,23 @@ static void gfx_draw_rect_outline_320x200x256(int x,int y,int w, int h,u8 c) {
     }
 
 }
-
+static void gfx_draw_char_320x200x256(int x, int y ,char chr,u8 color) {
+    unsigned char* font_chr = &font_5x8[chr * 8];
+   
+    for(int oy = 0; oy < 8; oy++) {
+        for(int ox = 0; ox < 5; ox++) {
+            if((font_chr[oy] >> (ox + 3)) & 0x01) {
+                gfx_draw_pixel((5 - ox) + x,oy + y,color);
+            }  else {
+                gfx_draw_pixel((5 - ox) + x,oy + y,COLOR_BLACK);
+            }
+        }
+    }
+}
+static void gfx_draw_text_320x200x256(int x, int y, char* text, int count, u8 color) {
+    for(int i = 0 ; i < count ; i++) {
+        gfx_draw_char(x + i * 6, y , text[i],color);
+    }
+}
 
 #endif

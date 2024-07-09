@@ -37,6 +37,8 @@
         "utility": "c",
         "algorithm": "c",
         "ordered_list.h": "c",
-        "heap.h": "c"
+        "heap.h": "c",
+        "font.h": "c",
+        "graphics.h": "c"
     }
 }

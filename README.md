@@ -26,6 +26,9 @@ and the most important goal is to learn and explore
 ![basic terminal overview](./dev-imgs/terminal_overview.gif)
 #### Mouse Driver
 ![mouse_driver](./dev-imgs/mouse_driver.gif)
+#### Basic interface
+![basic_user_interface](./dev-imgs/basic_ui.gif)
+
 
 ### Kinda Funny
 #### Printing Inside Print :O
